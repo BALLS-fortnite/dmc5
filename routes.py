@@ -16,14 +16,14 @@ def about():
     return render_template('about.html')
 
 
-# all characters page
-@app.route('/characters')
-def characters(id):
+# character page
+@app.route('/character/<int:id>')
+def character(id):
     conn = sqlite3.connect('dmc5.db')
     cur = conn.cursor()
-    cur.execute('SELECT * FROM Characters WHERE CharacterID=?', (id,))
-    characters = cur.fetchone()
-    return render_template('characters.html', characters=characters)
+    cur.execute('SELECT * FROM Character WHERE CharacterID=?', (id,))
+    character = cur.fetchone()
+    return render_template('character.html', character=character)
 
 
 if __name__ == "__main__":
