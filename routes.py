@@ -26,6 +26,7 @@ def character(id):
     return render_template('character.html', character=character)
 
 
+# all characters
 @app.route('/allcharacters')
 def all_characters():
     conn = sqlite3.connect('dmc5.db')
@@ -33,6 +34,26 @@ def all_characters():
     cur.execute('SELECT CharacterName, CharacterIcon FROM Character ORDER BY CharacterID')
     all_characters = cur.fetchall()
     return render_template('allcharacters.html', all_characters=all_characters)
+
+
+# all enemies
+@app.route('/allenemies')
+def all_enemies():
+    conn = sqlite3.connect('dmc5.db')
+    cur = conn.cursor()
+    cur.execute('SELECT EnemyName, EnemyIcon FROM Enemy ORDER BY EnemyID')
+    all_enemies = cur.fetchall()
+    return render_template('allenemies.html', all_enemies=all_enemies)
+
+
+# enemy page
+@app.route('/enemy/<int:id>')
+def enemy(id):
+    conn = sqlite3.connect('dmc5.db')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM Enemy WHERE EnemyID=?', (id,))
+    enemy = cur.fetchone()
+    return render_template('enemy.html', enemy=enemy)
 
 
 if __name__ == "__main__":
