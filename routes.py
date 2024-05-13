@@ -26,5 +26,14 @@ def character(id):
     return render_template('character.html', character=character)
 
 
+@app.route('/allcharacters')
+def all_characters():
+    conn = sqlite3.connect('dmc5.db')
+    cur = conn.cursor()
+    cur.execute('SELECT CharacterName, CharacterIcon FROM Character ORDER BY CharacterID')
+    all_characters = cur.fetchall()
+    return render_template('allcharacters.html', all_characters=all_characters)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
