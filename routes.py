@@ -56,5 +56,16 @@ def enemy(id):
     return render_template('enemy.html', enemy=enemy)
 
 
+
+
+# @app.route('/triangles/<int:size>')
+# def triangle(size):
+#     result = ""
+#     size += 1
+#     for number in range(size):
+#         result += "*" * number + "<br>"
+#     return result
+
+
 if __name__ == "__main__":
     app.run(debug=True)
