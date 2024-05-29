@@ -1,18 +1,24 @@
 body{
-  background-color: aliceblue;
+  background-color: #ebebeb;
 }
 header{
   background-color: #141414;
 }
 
-p{
-  color:aquamarine;
-  column-gap:  10px;
-}
 a{
-  color:aliceblue;
+  color: #ebebeb;
   text-decoration: none;
 }
 a:hover{
-  background-color:gold;
+  background-color:#91170C;
+}
+
+.headerimage{
+  width:100%;
+  height:100%;
+  position: relative;
+  overflow:hidden;
+  float:left;
+  
+
 }
