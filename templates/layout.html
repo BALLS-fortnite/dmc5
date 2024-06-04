@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href ='/static/css/style.css'>
+    <link rel="stylesheet" href='/static/css/style.css'>
     <title>DMC5</title>
 </head>
+
 <body>
     <header>
-        <div class="asd-">
+        <div class="headerbar">
 
-            <a href="/"><div class="headerimage">
-                <img src="/static/images/dmc5_logo.png">
-            </div>
+            <a href="/">
+                <div class="headerimage">
+                    <img src="/static/images/dmc5_logo.png">
+                </div>
             </a>
-            <a href="/allenemies">all enemies</a>
-            <a href="/allcharacters">allcharacters</a>
+            <div class="headertext">
+                <a href="/allenemies">Enemies</a>
+                <a href="/allcharacters">Characters</a>
+                </div>
+            <div class="dropdown">
+                <p onclick="dropdownfunction()" class="dropdownbutton">this is a dropdown</p>
+                <div id="dropdownclicked" class="dropdown-content"></div>
+                <a href="/allenemies">enemies</a>
+            </div>
+            </div>
+
         </div>
     </header>
-    <nav>  
+    <nav>
         <p>navbar</p>
     </nav>
     <main>
         {%block content%} {%endblock%}
     </main>
     <footer>
-            <p>this is the footer</p>
+        <p>this is the footer</p>
     </footer>
 </body>
+
 </html>

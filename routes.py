@@ -56,8 +56,6 @@ def enemy(id):
     return render_template('enemy.html', enemy=enemy)
 
 
-
-
 # @app.route('/triangles/<int:size>')
 # def triangle(size):
 #     result = ""

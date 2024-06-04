@@ -11,7 +11,15 @@ a{
 }
 a:hover{
   background-color:#91170C;
+  color: #fae1c3
 }
+
+.headerbar{
+  position:relative;
+  overflow:hidden;
+  align-items: center;
+}
+
 
 .headerimage{
   width:100%;
@@ -19,6 +27,42 @@ a:hover{
   position: relative;
   overflow:hidden;
   float:left;
-  
+}
 
+.headertext{
+  font-size: 25px;
+  padding-right: 10px;
+  text-align: left;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  color:#ebebeb
+}
+
+
+/* should be hidden unless clicked */
+.dropdown-content{
+  display: none;
+  position: absolute;
+  background-color: #ebebeb;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  
+}
+
+/* button for dropdown */
+.dropdownbutton{
+  color:#141414;
+  background-color: #ebebeb;
+  font-size:medium;
+  border:none;
+  cursor:pointer;
+
+}
+/* when dropdown button is clicked */
+.dropdownbutton:focus{
+  background-color: aqua;
 }
