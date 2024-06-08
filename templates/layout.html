@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='/static/css/style.css'>
+    <script src='/static/javascript/script.js'></script>
     <title>DMC5</title>
 </head>
 
@@ -19,23 +20,25 @@
                     <img src="/static/images/dmc5_logo.png">
                 </div>
             </a>
-            <div class="headertext">
-                <a href="/allenemies">Enemies</a>
-                <a href="/allcharacters">Characters</a>
-                </div>
-            <div class="dropdown">
-                <p onclick="dropdownfunction()" class="dropdownbutton">this is a dropdown</p>
-                <div id="dropdownclicked" class="dropdown-content"></div>
-                <a href="/allenemies">enemies</a>
-            </div>
-            </div>
-
         </div>
     </header>
     <nav>
-        <p>navbar</p>
+        <div class="navbaritems">
+            <a href="/allenemies">Enemies</a>
+            <a href="/allcharacters">Characters</a>
+            <div class="dropdown">
+                <div class="dropdownbutton">Information</div>
+                <div class="dropdown-content">
+                    <a href="/">Test1</a>
+                    <a href="/">Test2</a>
+                    <a href="/">Test3</a>
+                </div>
+            </div>
+
+        </div>
     </nav>
     <main>
+        blart man
         {%block content%} {%endblock%}
     </main>
     <footer>

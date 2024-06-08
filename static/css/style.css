@@ -1,6 +1,12 @@
 body{
   background-color: #ebebeb;
+  margin:0;
 }
+ul, li{
+  padding: 0;
+  list-style: none;
+}
+
 header{
   background-color: #141414;
 }
@@ -17,7 +23,6 @@ a:hover{
 .headerbar{
   position:relative;
   overflow:hidden;
-  align-items: center;
 }
 
 
@@ -29,40 +34,47 @@ a:hover{
   float:left;
 }
 
-.headertext{
+.navbaritems{
   font-size: 25px;
-  padding-right: 10px;
-  text-align: left;
+  background-color: #141414;
+}
+
+nav{
+  background-color: #141414;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .dropdown {
-  position: relative;
   display: inline-block;
-  color:#ebebeb
+  position: relative;
+
+}
+
+.dropdown a{
+  display: block;
+  color: #ebebeb;
+  padding: 10px 15px;
 }
 
 
-/* should be hidden unless clicked */
-.dropdown-content{
+.dropdown-content {
   display: none;
   position: absolute;
-  background-color: #ebebeb;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  
+  border-radius: .25rem;
+  background-color: #141414;
+  box-shadow: 2px 5px 0 rgba(0, 0, 0, .01);
 }
 
-/* button for dropdown */
+.dropdown:hover .dropdown-content{
+  display: block;
+}
 .dropdownbutton{
-  color:#141414;
-  background-color: #ebebeb;
-  font-size:medium;
-  border:none;
-  cursor:pointer;
-
+  background-color: #141414;
+  font-size: large;
+  color: #ebebeb;
 }
-/* when dropdown button is clicked */
-.dropdownbutton:focus{
-  background-color: aqua;
+.dropdownbutton:hover{
+  background-color: #91170C;
+  color: #fae1c3;
 }
