@@ -1,4 +1,4 @@
 {%extends 'layout.html'%}
 {% block content %}
-{{all_characters}}
+{% for character in all_characters %} {{character[0]}} {{character[1]}} <br> {% endfor %}
 {%endblock%}

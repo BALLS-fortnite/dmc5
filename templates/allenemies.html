@@ -1,4 +1,4 @@
 {%extends 'layout.html'%}
 {% block content %}
-{{all_enemies}}
+{% for enemy in all_enemies %} {{enemy[0]}} {{enemy[1]}} <br> {% endfor %}
 {%endblock%}
