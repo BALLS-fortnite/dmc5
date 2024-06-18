@@ -1,4 +1,4 @@
 {%extends 'layout.html'%}
 {% block content %}
-{{enemy[0]}}
+{% for enemy in normal_enemy %} {{enemy}} <br> {% endfor %}
 {%endblock%}
