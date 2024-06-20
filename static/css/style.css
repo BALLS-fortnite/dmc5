@@ -76,3 +76,10 @@ nav{
 .dropdownbutton:hover{
   background-color: #91170C;
 }
+
+footer{
+  background-color: #141414;
+  display: block;
+  color:#ebebeb;
+  
+}
