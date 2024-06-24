@@ -56,36 +56,14 @@ def enemy(id):
     return render_template('enemy.html', enemy=enemy)
 
 
-# normal enemy page
-@app.route('/enemy/normal')
-def normal_enemy():
-    conn = sqlite3.connect('dmc5.db')
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM Enemy WHERE EnemyType= "Normal" ORDER BY EnemyID')
-    normal_enemy = cur.fetchall()
-    return render_template('normal_enemy.html', normal_enemy=normal_enemy)
 
-
-
-# elite enemy page
-@app.route('/enemy/elite')
-def elite_enemy():
+@app.route('/enemy/type/<int:id>')
+def enemy_type(id):
     conn = sqlite3.connect('dmc5.db')       
     cur = conn.cursor()
-    cur.execute('SELECT * FROM Enemy WHERE EnemyType= "Elite" ORDER BY EnemyID')
-    elite_enemy = cur.fetchall()
-    return render_template('elite.html', elite_enemy=elite_enemy)
-
-
-# boss enemy page
-@app.route('/enemy/boss')
-def boss_enemy():
-    conn = sqlite3.connect('dmc5.db')       
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM Enemy WHERE EnemyType= "Boss" ORDER BY EnemyID')
-    boss_enemy = cur.fetchall()
-    return render_template('boss.html', boss_enemy=boss_enemy)
-
+    cur.execute('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
+    enemy_type = cur.fetchall()
+    return render_template('enemy_type.html', enemy_type=enemy_type)
 
 # @app.route('/triangles/<int:size>')
 # def triangle(size):
