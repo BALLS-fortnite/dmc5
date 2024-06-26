@@ -1,4 +1,8 @@
 {%extends 'layout.html'%}
 {% block content %}
-{% for character in all_characters %} <img src="/static/images/{{character[1]}}" height="200px" alt=""> <br> {{character[0]}} <br> {% endfor %}
+{% for character in all_characters %}
+<div class="cards">
+    <div class="card"><a href="/character/{{character[0]}}"><img src="/static/images/{{character[4]}}" height="200px" alt="">{{character[0]}} {{character[1]}} {{character[2]}} {{character[3]}}</a></div>
+{% endfor %}
+</div>
 {%endblock%}
