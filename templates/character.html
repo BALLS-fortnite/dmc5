@@ -1,9 +1,13 @@
 {%extends 'layout.html'%}
 {% block content %}
-<div class="flexcontainer">
-    <img src="/static/images/{{character[4]}}" alt="DMC5 Character">
-    <div class=container1>
-     <br> {{character[0]}} {{character[1]}} {{character[2]}} {{character[3]}}</div>
+<div class="grid-container">
+    <div class="grid-item">
+        <h2>{{ character[1] }}</h2>
+        <img src="/static/images/{{character[4]}}" height="200px" alt="{{character[1]}}">
+        <p>Name: {{character[1]}}</p>
+        <p>Playability: {{character[2]}}</p>
+        <p>Description:{{character[3]}}</p>
+    </div>
 </div>
-  
+
 {%endblock%}

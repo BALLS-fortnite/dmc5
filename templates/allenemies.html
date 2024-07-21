@@ -1,4 +1,13 @@
 {%extends 'layout.html'%}
 {% block content %}
-{% for enemy in all_enemies %} {{enemy[0]}} {{enemy[1]}} <br> {% endfor %}
+<div class="grid-container">
+    {% for enemy in all_enemies %}
+    <div class="grid-item">
+        <h2>{{ enemy[1] }}</h2>
+        <img src="/static/images/{{ enemy[4] }}" height="200px" alt="{{ enemy[1] }}">
+        <p>Type: {{ enemy[2] }}</p>
+        <p>Description: {{ enemy[3] }}</p>
+    </div>
+    {% endfor %}
+</div>
 {%endblock%}

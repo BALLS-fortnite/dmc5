@@ -41,7 +41,7 @@ def all_characters():
 def all_enemies():
     conn = sqlite3.connect('dmc5.db')
     cur = conn.cursor()
-    cur.execute('SELECT EnemyName, EnemyIcon FROM Enemy ORDER BY EnemyID')
+    cur.execute('SELECT * FROM Enemy ORDER BY EnemyID')
     all_enemies = cur.fetchall()
     return render_template('allenemies.html', all_enemies=all_enemies)
 

@@ -1,8 +1,23 @@
 {%extends 'layout.html'%}
 {% block content %}
-{% for character in all_characters %}
-<div class="cards">
-    <div class="card"><a href="/character/{{character[0]}}"><img src="/static/images/{{character[4]}}" height="200px" alt="">{{character[0]}} {{character[1]}} {{character[2]}} {{character[3]}}</a></div>
-{% endfor %}
+<div class="grid-container">
+    {% for character in all_characters %}
+    <div class="grid-item">
+        <h2>{{character[1]}}</h2>
+        <a href="/character/{{character[0]}}">
+            <img src="/static/images/{{character[4]}}" height="200px" alt="{{character[1]}}">
+        </a>
+        <p>Type: {{character2}}</p>
+        <p>Description: {{character3}}</p>
+    </div>
+    {% endfor %}
 </div>
+<!-- {% for character in all_characters %}
+<div class="cards">
+    <div class="card">
+        <a href="/character/{{character[0]}}"><img src="/static/images/{{character[4]}}" height="200px" alt="">
+            {{character[0]}} {{character[1]}} {{character[2]}} {{character[3]}}</a>
+        </div>
+{% endfor %}
+</div> -->
 {%endblock%}
