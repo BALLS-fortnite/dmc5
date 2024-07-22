@@ -56,7 +56,7 @@ def enemy(id):
     return render_template('enemy.html', enemy=enemy)
 
 
-
+# enemies by type
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     conn = sqlite3.connect('dmc5.db')       
