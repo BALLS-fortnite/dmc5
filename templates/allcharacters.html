@@ -7,17 +7,9 @@
         <a href="/character/{{character[0]}}">
             <img src="/static/images/{{character[4]}}" height="200px" alt="{{character[1]}}">
         </a>
-        <p>Type: {{character2}}</p>
-        <p>Description: {{character3}}</p>
+        <p>Type: {{character[2]}}</p>
+        <p>Description: {{character[3]}}</p>
     </div>
     {% endfor %}
 </div>
-<!-- {% for character in all_characters %}
-<div class="cards">
-    <div class="card">
-        <a href="/character/{{character[0]}}"><img src="/static/images/{{character[4]}}" height="200px" alt="">
-            {{character[0]}} {{character[1]}} {{character[2]}} {{character[3]}}</a>
-        </div>
-{% endfor %}
-</div> -->
 {%endblock%}

@@ -15,9 +15,6 @@ a{
   color: #ebebeb;
   text-decoration: none;
 }
-a:hover{
-  background-color:#91170C;
-}
 
 .headerbar{
   position:relative;
@@ -107,6 +104,12 @@ footer{
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: 0.3s;
+}
+
+.grid-item:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+
 }
 .grid-item h2 {
   margin: 0 0 10px;
