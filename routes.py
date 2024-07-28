@@ -3,6 +3,8 @@ from flask import Flask, render_template
 import sqlite3
 app = Flask(__name__)
 
+empty_query = None
+
 
 # do queries
 def execute_query(query, query_value=(), fetchone=False):
@@ -35,7 +37,10 @@ def about():
 @app.route('/character/<int:id>')
 def character(id):
     character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
-    return render_template('character.html', character=character)
+    if character == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('character.html', character=character)
 
 
 # all characters
@@ -56,14 +61,20 @@ def all_enemies():
 @app.route('/enemy/<int:id>')
 def enemy(id):
     enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
-    return render_template('enemy.html', enemy=enemy)
+    if enemy == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('enemy.html', enemy=enemy)
 
 
 # enemies by type
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
-    return render_template('enemy_type.html', enemy_type=enemy_type)
+    if enemy_type == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('enemy_type.html', enemy_type=enemy_type)
 
 # @app.route('/triangles/<int:size>')
 # def triangle(size):
@@ -72,6 +83,11 @@ def enemy_type(id):
 #     for number in range(size):
 #         result += "*" * number + "<br>"
 #     return result
+
+
+@app.errorhandler(404)
+def page_not_found(exception):
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
