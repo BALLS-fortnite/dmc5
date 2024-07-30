@@ -85,6 +85,7 @@ def enemy_type(id):
 #     return result
 
 
+# error page
 @app.errorhandler(404)
 def page_not_found(exception):
     return render_template('404.html'), 404

@@ -33,6 +33,8 @@ a{
 .navbaritems{
   font-size: 25px;
   background-color: #141414;
+  display: inline-block;
+  position: relative;
 }
 
 nav{
