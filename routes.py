@@ -85,6 +85,16 @@ def enemy_type(id):
 #     return result
 
 
+# select character to see all strategies for said character
+@app.route('/strategy/character/<int:id>')
+def character_strategy(id):
+    character_strategy = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,))
+    if character_strategy == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('layout.html', character_strategy=character_strategy)
+
+
 # error page
 @app.errorhandler(404)
 def page_not_found(exception):
