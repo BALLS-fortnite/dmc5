@@ -92,14 +92,14 @@ def character_strategy():
     if character_strategy == empty_query:
         return render_template('404.html')
     else:
-        return render_template('character_strategy.html', character_strategy=character_strategy)
+        return render_template('select_character_strategy.html', character_strategy=character_strategy)
 
 
 # enemies by type
 @app.route('/strategy/character/<int:id>')
 def character_all_strategy(id):
-    character_all_strategy = execute_query('''SELECT 
-    Character.CharacterID, 
+    character_all_strategy = execute_query('''SELECT
+    Character.CharacterID,
     Character.CharacterName,
     Character.CharacterIcon,
     Character_Enemy.Difficulty,

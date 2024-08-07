@@ -1,4 +1,15 @@
 {%extends 'layout.html'%}
 {% block content %}
-{{character_all_strategy[1]}}
+<div class="grid-container">
+    {% for character in character_all_strategy %}
+    <div class="grid-item">
+        <h2>Strategy for beating {{character[6]}}</h2>
+        <a href="/strategy/character/{{character[0]}}">
+            <img src="/static/images/{{character[7]}}" height="200px" alt="{{character[1]}}">
+        </a>
+        <p>Difficulty: {{ character[3] }}</p>
+        <p>Enemy Type: {{ character[8] }}</p>
+    </div>
+    {% endfor %}
+</div>
 {%endblock%}
