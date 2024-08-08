@@ -95,7 +95,7 @@ def character_strategy():
         return render_template('select_character_strategy.html', character_strategy=character_strategy)
 
 
-# enemies by type
+# one character, all strategies
 @app.route('/strategy/character/<int:id>')
 def character_all_strategy(id):
     character_all_strategy = execute_query('''SELECT
@@ -116,6 +116,29 @@ WHERE Character.CharacterID = ?''', (id,))
         return render_template('404.html')
     else:
         return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
+
+
+# strategy on one enemy for one character
+@app.route('/strategy/<int:ch>/<int:en>')
+def strategy(ch, en):
+    strategy = execute_query('''SELECT
+    Character.CharacterID,
+    Character.CharacterName,
+    Character.CharacterIcon,
+    Character_Enemy.Difficulty,
+    Character_Enemy.Strategy,
+    Enemy.EnemyID,
+    Enemy.EnemyName,
+    Enemy.EnemyIcon,
+    Enemy.EnemyType
+FROM Character
+JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
+JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
+WHERE Character.CharacterID = ?''', (ch,), (en,))
+    if strategy == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('strategy.html', strategy=strategy)
 
 
 # error page
