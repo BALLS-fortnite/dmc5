@@ -118,33 +118,53 @@ WHERE Character.CharacterID = ?''', (id,))
         return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
 
 
-# strategy on one enemy for one character
 @app.route('/strategy/<int:ch>/<int:en>')
 def strategy(ch, en):
-    strategy = execute_query('''SELECT
-    Character.CharacterID,
-    Character.CharacterName,
-    Character.CharacterIcon,
-    Character_Enemy.Difficulty,
-    Character_Enemy.Strategy,
-    Enemy.EnemyID,
-    Enemy.EnemyName,
-    Enemy.EnemyIcon,
-    Enemy.EnemyType
-FROM Character
-JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
-JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
-WHERE Character.CharacterID = ?''', (ch,), (en,))
-    if strategy == empty_query:
+    # Execute the query with both parameters
+    query = '''
+    SELECT
+        Character.CharacterID,
+        Character.CharacterName,
+        Character.CharacterIcon,
+        Character_Enemy.Difficulty,
+        Character_Enemy.Strategy,
+        Enemy.EnemyID,
+        Enemy.EnemyName,
+        Enemy.EnemyIcon,
+        Enemy.EnemyType
+    FROM Character
+    JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
+    JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
+    WHERE Character.CharacterID = ? AND Enemy.EnemyID = ?
+    '''
+
+    # Execute the query
+    strategy = execute_query(query, (ch, en))
+
+    # Check if a result was returned
+    if not strategy:
         return render_template('404.html')
-    else:
-        return render_template('strategy.html', strategy=strategy)
+
+    # Pass the first row (tuple) to the template
+    return render_template('strategy.html', strategy=strategy[0])
 
 
 # error page
 @app.errorhandler(404)
 def page_not_found(exception):
     return render_template('404.html'), 404
+
+
+# login
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+# register
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 
 if __name__ == "__main__":
