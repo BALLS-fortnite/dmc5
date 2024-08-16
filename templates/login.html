@@ -1,4 +1,14 @@
 {%extends 'layout.html'%}
 {% block content %}
-<p>login</p>
+<form method = "POST" action="/login">
+
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter username" name="username" id="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+
+    <button type="submit" class="empty">Login</button>
+
+</form>
 {%endblock%}

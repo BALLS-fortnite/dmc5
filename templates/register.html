@@ -1,4 +1,25 @@
 {%extends 'layout.html'%}
 {% block content %}
-<p>asdads</p>
+<form method = "POST" action="/register">
+    <div class="container">
+      <h1>Register</h1>
+      <p>Please fill in this form to create an account.</p>
+      <hr>
+  
+      <label for="username"><b>Username</b></label>
+      <input type="text" placeholder="Enter username" name="username" id="username" required>
+  
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" id="passworwd" required>
+  
+      <label for="passworwd_repeat"><b>Repeat Password</b></label>
+      <input type="password" placeholder="Repeat Password" name="passworwd_repeat" id="passworwd_repeat" required>
+      <hr>
+      <button type="submit" class="registerbtn">Register</button>
+    </div>
+  
+    <div class="container signin">
+      <p>Already have an account? <a href="#">Sign in</a>.</p>
+    </div>
+  </form>
 {%endblock%}

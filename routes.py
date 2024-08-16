@@ -1,7 +1,10 @@
 # pip install flask
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session, redirect, g, url_for
+import os
 import sqlite3
 app = Flask(__name__)
+
+app.secret_key = os.urandom(24)
 
 empty_query = None
 
@@ -156,15 +159,47 @@ def page_not_found(exception):
 
 
 # login
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+        conn = sqlite3.connect('account.db')
+        cur = conn.cursor()
+        cur.execute(f"SELECT username, password FROM accounts WHERE username ='{username}';")
+        user = cur.fetchone()
+        if user and password == user[1]:
+            print(user)
+            session["username"] = user[0]
+            return redirect('/confirm')
+        conn.commit()
+        conn.close()
+        pass
+
     return render_template('login.html')
 
 
 # register
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+        passworwd_repeat = request.form.get("passworwd_repeat")
+        print(username, password, passworwd_repeat)
+        conn = sqlite3.connect('account.db')
+        cur = conn.cursor()
+        cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
+        conn.commit()
+        conn.close()
+        pass
+
     return render_template('register.html')
+
+
+@app.route('/confirm')
+def confirm():
+    return render_template('confirm.html')
 
 
 if __name__ == "__main__":
