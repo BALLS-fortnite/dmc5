@@ -170,7 +170,7 @@ def login():
         user = cur.fetchone()
         if user and password == user[1]:
             print(user)
-            session["username"] = user[0]
+            session['username'] = user[0]
             return redirect('/confirm')
         conn.commit()
         conn.close()
@@ -185,16 +185,26 @@ def register():
     if request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
-        passworwd_repeat = request.form.get("passworwd_repeat")
-        print(username, password, passworwd_repeat)
+        password_repeat = request.form.get("password_repeat")
+        # print(username, password, password_repeat)
         conn = sqlite3.connect('account.db')
         cur = conn.cursor()
-        cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
-        conn.commit()
-        conn.close()
-        pass
+        unique_username = cur.execute(f"SELECT username FROM ACCOUNTS WHERE username ={'username'}")
+        if unique_username is None:
+            cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
+            conn.commit()
+            conn.close()
+        if unique_username != None:
+            
 
+        
     return render_template('register.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/')
 
 
 @app.route('/confirm')
