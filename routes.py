@@ -74,7 +74,7 @@ def enemy(id):
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
-    if enemy_type == empty_query:
+    if not enemy_type:
         return render_template('404.html')
     else:
         return render_template('enemy_type.html', enemy_type=enemy_type)
@@ -194,10 +194,10 @@ def register():
             cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
             conn.commit()
             conn.close()
-        if unique_username != None:
-            
+            pass
+        if unique_username is not None:
+            print('skibidi toilet')
 
-        
     return render_template('register.html')
 
 
