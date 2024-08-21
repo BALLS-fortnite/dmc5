@@ -1,5 +1,5 @@
 # pip install flask
-from flask import Flask, render_template, request, session, redirect, g, url_for
+from flask import Flask, render_template, request, session, redirect, g, url_for, flash
 import os
 import sqlite3
 app = Flask(__name__)
@@ -189,15 +189,16 @@ def register():
         # print(username, password, password_repeat)
         conn = sqlite3.connect('account.db')
         cur = conn.cursor()
+        if password != password_repeat:
+            flash("Password does not match")
+            return redirect('/register')
         unique_username = cur.execute(f"SELECT username FROM ACCOUNTS WHERE username ={'username'}")
-        if unique_username is None:
-            cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
-            conn.commit()
-            conn.close()
-            pass
-        if unique_username is not None:
-            print('skibidi toilet')
-
+        if not unique_username:
+            flash('Username taken')
+            return redirect('/register')
+        cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
+        conn.commit()
+        conn.close()
     return render_template('register.html')
 
 
