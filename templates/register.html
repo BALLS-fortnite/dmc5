@@ -4,26 +4,28 @@
     <div class="container">
       <h1>Register</h1>
       <p>Please fill in this form to create an account.</p>
-      <hr>
   
       <label for="username"><b>Username</b></label>
-      <input type="text" placeholder="Enter username" name="username" id="username" required>
-  {% with messages = get_flashed_messages()%}
-  {% if messages %}
-  {%for message in messages %}
-  <p>{{ message }}</p>
-  {% endfor %}
-  {% endif %}
-  {% endwith %}
+      <input type="text" textfield="Enter username" name="username" id="username" minlength="8" maxlength="24" required>
+
       <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" id="password" required>
+      <input type="password" textfield="Enter Password" name="password" id="password" minlength="8" maxlength="24" required>
   
       <label for="passworwd_repeat"><b>Repeat Password</b></label>
-      <input type="password" placeholder="Repeat Password" name="password_repeat" id="password_repeat" required>
-      <hr>
+      <input type="password" textfield="Repeat Password" name="password_repeat" id="password_repeat" minlength="8" maxlength="24" required>
+  
+      {% with messages = get_flashed_messages()%}
+      {% if messages %}
+      {%for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    
       <button type="submit" class="registerbtn">Register</button>
     </div>
-  
+
+
     <div class="container signin">
       <p>Already have an account? <a href="/login">Sign in</a>.</p>
     </div>

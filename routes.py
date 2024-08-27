@@ -169,12 +169,12 @@ def login():
         cur.execute(f"SELECT username, password FROM accounts WHERE username ='{username}';")
         user = cur.fetchone()
         if user and password == user[1]:
-            print(user)
             session['username'] = user[0]
             return redirect('/confirm')
+        else:
+            flash('Login attempt failed')
         conn.commit()
         conn.close()
-        pass
 
     return render_template('login.html')
 
@@ -189,6 +189,7 @@ def register():
         # print(username, password, password_repeat)
         conn = sqlite3.connect('account.db')
         cur = conn.cursor()
+        # check for matching password
         if password != password_repeat:
             flash("Password does not match")
             return redirect('/register')
@@ -212,6 +213,11 @@ def logout():
 @app.route('/confirm')
 def confirm():
     return render_template('confirm.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 
 if __name__ == "__main__":
