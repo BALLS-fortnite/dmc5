@@ -24,6 +24,8 @@ def execute_query(query, query_value=(), fetchone=False):
     return result
 
 
+
+
 # base page
 @app.route('/')
 def homepage():
@@ -63,11 +65,17 @@ def all_enemies():
 # enemy page
 @app.route('/enemy/<int:id>')
 def enemy(id):
-    enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
-    if enemy == empty_query:
+    try:
+        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
         return render_template('404.html')
-    else:
-        return render_template('enemy.html', enemy=enemy)
+    finally:
+        if enemy == empty_query:
+            return render_template('404.html')
+        else:
+            return render_template('enemy.html', enemy=enemy)
+    except OverflowError:
+
+
 
 
 # enemies by type
@@ -168,6 +176,7 @@ def login():
         cur = conn.cursor()
         cur.execute(f"SELECT username, password FROM accounts WHERE username ='{username}';")
         user = cur.fetchone()
+        # correct username and password
         if user and password == user[1]:
             session['username'] = user[0]
             return redirect('/confirm')
@@ -194,6 +203,7 @@ def register():
             flash("Password does not match")
             return redirect('/register')
         unique_username = cur.execute(f"SELECT username FROM ACCOUNTS WHERE username ={'username'}")
+        # Username is already in database
         if not unique_username:
             flash('Username taken')
             return redirect('/register')
