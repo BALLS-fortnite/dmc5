@@ -41,11 +41,14 @@ def about():
 # character page
 @app.route('/character/<int:id>')
 def character(id):
-    character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
-    if character == empty_query:
+    try:
+        character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
+        if character == empty_query:
+            return render_template('404.html')
+        else:
+            return render_template('character.html', character=character)
+    except OverflowError:
         return render_template('404.html')
-    else:
-        return render_template('character.html', character=character)
 
 
 # all characters
@@ -66,34 +69,32 @@ def all_enemies():
 @app.route('/enemy/<int:id>')
 def enemy(id):
     try:
+        # Execute the query and fetch one record
         enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
-        return render_template('404.html')
-    finally:
+
+        # Check if the result is empty
         if enemy == empty_query:
             return render_template('404.html')
         else:
+            # Render the template with the enemy details if found
             return render_template('enemy.html', enemy=enemy)
     except OverflowError:
-
-
+        # Handles the very large numbers sql can't handle
+        return render_template('404.html', message="An unexpected error occurred.")
 
 
 # enemies by type
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
-    enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
-    if not enemy_type:
+    try:
+        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
+        if not enemy_type:
+            return render_template('404.html')
+        else:
+            return render_template('enemy_type.html', enemy_type=enemy_type)
+        # prevent large numbers from breaking website
+    except OverflowError:
         return render_template('404.html')
-    else:
-        return render_template('enemy_type.html', enemy_type=enemy_type)
-
-# @app.route('/triangles/<int:size>')
-# def triangle(size):
-#     result = ""
-#     size += 1
-#     for number in range(size):
-#         result += "*" * number + "<br>"
-#     return result
 
 
 # select character to see all strategies for said character
@@ -109,7 +110,8 @@ def character_strategy():
 # one character, all strategies
 @app.route('/strategy/character/<int:id>')
 def character_all_strategy(id):
-    character_all_strategy = execute_query('''SELECT
+    try:
+        character_all_strategy = execute_query('''SELECT
     Character.CharacterID,
     Character.CharacterName,
     Character.CharacterIcon,
@@ -123,11 +125,12 @@ FROM Character
 JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
 JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
 WHERE Character.CharacterID = ?''', (id,))
-    if character_all_strategy == empty_query:
+        if character_all_strategy == empty_query:
+            return render_template('404.html')
+        else:
+            return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
+    except OverflowError:
         return render_template('404.html')
-    else:
-        return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
-
 
 @app.route('/strategy/<int:ch>/<int:en>')
 def strategy(ch, en):
