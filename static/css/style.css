@@ -137,3 +137,11 @@ footer{
 .container-signin{
  color:#141414
 }
+
+
+/* error message */
+.flash-message{
+  color:#91170C;
+  font-weight: bold;
+  font-size: 1.5vw;
+}

@@ -14,13 +14,14 @@
       <label for="passworwd_repeat"><b>Repeat Password</b></label>
       <input type="password" textfield="Repeat Password" name="password_repeat" id="password_repeat" minlength="8" maxlength="24" required>
   
-      {% with messages = get_flashed_messages()%}
+      <!-- unsuccessful register -->
+      {% with messages = get_flashed_messages() %}
       {% if messages %}
-      {%for message in messages %}
-      <p>{{ message }}</p>
-      {% endfor %}
+          {% for message in messages %}
+              <p class="flash-message">{{ message }}</p>
+          {% endfor %}
       {% endif %}
-      {% endwith %}
+  {% endwith %}
     
       <button type="submit" class="registerbtn">Register</button>
     </div>

@@ -10,10 +10,13 @@ empty_query = None
 
 
 # do queries
-def execute_query(query, query_value=(), fetchone=False):
-    conn = sqlite3.connect('dmc5.db')
+def execute_query(query, query_value=(), fetchone=False,  commit=False, database=''):
+    conn = sqlite3.connect(database)  # connect to the specified database
     cur = conn.cursor()
     cur.execute(query, query_value)
+
+    if commit:
+        conn.commit()
 
     if fetchone:
         result = cur.fetchone()
@@ -22,8 +25,6 @@ def execute_query(query, query_value=(), fetchone=False):
 
     conn.close()
     return result
-
-
 
 
 # base page
@@ -42,7 +43,7 @@ def about():
 @app.route('/character/<int:id>')
 def character(id):
     try:
-        character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
+        character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True, database='dmc5.db')
         if character == empty_query:
             return render_template('404.html')
         else:
@@ -54,14 +55,14 @@ def character(id):
 # all characters
 @app.route('/allcharacters')
 def all_characters():
-    all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID')
+    all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID', database='dmc5.db')
     return render_template('allcharacters.html', all_characters=all_characters)
 
 
 # all enemies
 @app.route('/allenemies')
 def all_enemies():
-    all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID')
+    all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID', database='dmc5.db')
     return render_template('allenemies.html', all_enemies=all_enemies)
 
 
@@ -69,17 +70,16 @@ def all_enemies():
 @app.route('/enemy/<int:id>')
 def enemy(id):
     try:
-        # Execute the query and fetch one record
-        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
+        # gets one enemy from db
+        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True, database='dmc5.db')
 
-        # Check if the result is empty
+        # check if the result is empty
         if enemy == empty_query:
             return render_template('404.html')
         else:
-            # Render the template with the enemy details if found
             return render_template('enemy.html', enemy=enemy)
     except OverflowError:
-        # Handles the very large numbers sql can't handle
+        # handles the very large numbers sql can't handle
         return render_template('404.html', message="An unexpected error occurred.")
 
 
@@ -87,7 +87,7 @@ def enemy(id):
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     try:
-        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
+        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,), database='dmc5.db')
         if not enemy_type:
             return render_template('404.html')
         else:
@@ -100,11 +100,11 @@ def enemy_type(id):
 # select character to see all strategies for said character
 @app.route('/strategy/character/')
 def character_strategy():
-    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
+    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID', database='dmc5.db')
     if character_strategy == empty_query:
         return render_template('404.html')
     else:
-        return render_template('select_character_strategy.html', character_strategy=character_strategy)
+        return render_template('select_character_strategy.html', character_strategy=character_strategy,)
 
 
 # one character, all strategies
@@ -124,7 +124,7 @@ def character_all_strategy(id):
 FROM Character
 JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
 JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
-WHERE Character.CharacterID = ?''', (id,))
+WHERE Character.CharacterID = ?''', (id,), database='dmc5.db')
         if character_all_strategy == empty_query:
             return render_template('404.html')
         else:
@@ -132,9 +132,10 @@ WHERE Character.CharacterID = ?''', (id,))
     except OverflowError:
         return render_template('404.html')
 
+
 @app.route('/strategy/<int:ch>/<int:en>')
 def strategy(ch, en):
-    # Execute the query with both parameters
+    # executes the query with both parameters
     query = '''
     SELECT
         Character.CharacterID,
@@ -152,14 +153,12 @@ def strategy(ch, en):
     WHERE Character.CharacterID = ? AND Enemy.EnemyID = ?
     '''
 
-    # Execute the query
-    strategy = execute_query(query, (ch, en))
+    strategy = execute_query(query, (ch, en), database='dmc5.db')
 
-    # Check if a result was returned
+    # checks if a result was returned
     if not strategy:
         return render_template('404.html')
 
-    # Pass the first row (tuple) to the template
     return render_template('strategy.html', strategy=strategy[0])
 
 
@@ -173,20 +172,24 @@ def page_not_found(exception):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get("username")
-        password = request.form.get("password")
-        conn = sqlite3.connect('account.db')
-        cur = conn.cursor()
-        cur.execute(f"SELECT username, password FROM accounts WHERE username ='{username}';")
-        user = cur.fetchone()
-        # correct username and password
-        if user and password == user[1]:
-            session['username'] = user[0]
-            return redirect('/confirm')
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # check if the username exists and the password matches
+        user = execute_query(
+            "SELECT * FROM users WHERE username = ? AND password = ?",
+            (username, password),
+            fetchone=True,
+            database='account.db'
+        )
+
+        if user:
+            # successful login
+            return redirect('/dashboard')
         else:
-            flash('Login attempt failed')
-        conn.commit()
-        conn.close()
+            # login failed
+            flash('Invalid username or password')
+            return redirect('/login')
 
     return render_template('login.html')
 
@@ -198,22 +201,35 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         password_repeat = request.form.get("password_repeat")
-        # print(username, password, password_repeat)
-        conn = sqlite3.connect('account.db')
-        cur = conn.cursor()
-        # check for matching password
+
+        # check for matching passwords
         if password != password_repeat:
             flash("Password does not match")
             return redirect('/register')
-        unique_username = cur.execute(f"SELECT username FROM ACCOUNTS WHERE username ={'username'}")
-        # Username is already in database
-        if not unique_username:
+
+        # check for unique username
+        unique_username = execute_query(
+            "SELECT username FROM ACCOUNTS WHERE username = ?",
+            (username,),
+            database='account.db',
+            fetchone=True
+        )
+
+        # username already exists
+        if unique_username:
             flash('Username taken')
             return redirect('/register')
-        cur.execute(f"INSERT INTO accounts (username, password) values ('{username}', '{password}')")
-        conn.commit()
-        conn.close()
+
+        # add new user into the database
+        execute_query(
+            "INSERT INTO accounts (username, password) VALUES (?, ?)",
+            (username, password),
+            database='account.db',
+            commit=True  # saves to the db
+        )
+
         return redirect('/login')
+
     return render_template('register.html')
 
 
