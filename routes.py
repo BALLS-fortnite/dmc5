@@ -177,7 +177,7 @@ def login():
 
         # check if the username exists and the password matches
         user = execute_query(
-            "SELECT * FROM users WHERE username = ? AND password = ?",
+            "SELECT * FROM accounts WHERE username = ? AND password = ?",
             (username, password),
             fetchone=True,
             database='account.db'
@@ -185,6 +185,7 @@ def login():
 
         if user:
             # successful login
+            session['username'] = username
             return redirect('/dashboard')
         else:
             # login failed
@@ -218,6 +219,12 @@ def register():
         # username already exists
         if unique_username:
             flash('Username taken')
+            return redirect('/register')
+
+        # checks for if it is a letter or number
+        check_type = username.isalnum()
+        if check_type is False:
+            flash('Only letters and numbers are allowed')
             return redirect('/register')
 
         # add new user into the database
