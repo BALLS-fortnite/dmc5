@@ -1,5 +1,7 @@
 {%extends 'layout.html'%}
 {% block content %}
-<p>{{session['username']}} asdadadadasd</p>
+<p>Username: {{session['username']}}</p>
 <p>This is the dashboard</p>
+<button><a href="/logout">Logout</a></button>
+<button><a href="/delete">Delete Account</a></button>
 {%endblock%}

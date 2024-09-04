@@ -1,5 +1,5 @@
 # pip install flask
-from flask import Flask, render_template, request, session, redirect, g, url_for, flash
+from flask import Flask, render_template, request, session, redirect, g, url_for, flash, get_flashed_messages
 import os
 import sqlite3
 app = Flask(__name__)
@@ -238,6 +238,17 @@ def register():
         return redirect('/login')
 
     return render_template('register.html')
+
+
+@app.route('/delete')
+def delete():
+    get_flashed_messages()
+    username = session['username']
+
+    execute_query('DELETE FROM accounts WHERE username=?', (username,), database='account.db', commit=True)
+    session.pop('username', None)
+    flash('Account deleted')
+    return redirect('/')
 
 
 @app.route('/logout')

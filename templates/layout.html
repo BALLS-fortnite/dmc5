@@ -68,8 +68,16 @@
             </div>
     </nav>
     <main>
+
         <br>
         {%block content%} {%endblock%}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="flash-message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </main>
     <footer>
         <h2>CONTACT ME</h2>

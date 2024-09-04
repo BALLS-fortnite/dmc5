@@ -9,14 +9,5 @@
     <input type="password" textfield="Enter Password" name="password" id="password" minlength="8" maxlength="24" required>
     <button type="submit" class="empty">Login</button>
 
-<!-- unsuccessful login -->
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <p class="flash-message">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
 </form>
 {%endblock%}
