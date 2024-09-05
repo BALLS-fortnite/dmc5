@@ -1,8 +1,19 @@
 # pip install flask
-from flask import Flask, render_template, request, session, redirect, g, url_for, flash, get_flashed_messages
+from flask import Flask, render_template, request, session, redirect, url_for, flash, get_flashed_messages
+from werkzeug.utils import secure_filename
+from datetime import datetime
 import os
 import sqlite3
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 megabytes
+app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 app.secret_key = os.urandom(24)
 
@@ -10,8 +21,8 @@ empty_query = None
 
 
 # do queries
-def execute_query(query, query_value=(), fetchone=False,  commit=False, database=''):
-    conn = sqlite3.connect(database)  # connect to the specified database
+def execute_query(query, query_value=(), fetchone=False,  commit=False,):
+    conn = sqlite3.connect('dmc5.db')  # connect to the specified database
     cur = conn.cursor()
     cur.execute(query, query_value)
 
@@ -30,20 +41,14 @@ def execute_query(query, query_value=(), fetchone=False,  commit=False, database
 # base page
 @app.route('/')
 def homepage():
-    return render_template('home.html')
-
-
-# about page
-@app.route('/about')
-def about():
-    return render_template('about.html')
+    return render_template('layout.html')
 
 
 # character page
 @app.route('/character/<int:id>')
 def character(id):
     try:
-        character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True, database='dmc5.db')
+        character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
         if character == empty_query:
             return render_template('404.html')
         else:
@@ -55,14 +60,14 @@ def character(id):
 # all characters
 @app.route('/allcharacters')
 def all_characters():
-    all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID', database='dmc5.db')
+    all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID')
     return render_template('allcharacters.html', all_characters=all_characters)
 
 
 # all enemies
 @app.route('/allenemies')
 def all_enemies():
-    all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID', database='dmc5.db')
+    all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID')
     return render_template('allenemies.html', all_enemies=all_enemies)
 
 
@@ -71,7 +76,7 @@ def all_enemies():
 def enemy(id):
     try:
         # gets one enemy from db
-        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True, database='dmc5.db')
+        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
 
         # check if the result is empty
         if enemy == empty_query:
@@ -87,7 +92,7 @@ def enemy(id):
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     try:
-        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,), database='dmc5.db')
+        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
         if not enemy_type:
             return render_template('404.html')
         else:
@@ -100,7 +105,7 @@ def enemy_type(id):
 # select character to see all strategies for said character
 @app.route('/strategy/character/')
 def character_strategy():
-    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID', database='dmc5.db')
+    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
     if character_strategy == empty_query:
         return render_template('404.html')
     else:
@@ -124,7 +129,7 @@ def character_all_strategy(id):
 FROM Character
 JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
 JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
-WHERE Character.CharacterID = ?''', (id,), database='dmc5.db')
+WHERE Character.CharacterID = ?''', (id,))
         if character_all_strategy == empty_query:
             return render_template('404.html')
         else:
@@ -153,7 +158,7 @@ def strategy(ch, en):
     WHERE Character.CharacterID = ? AND Enemy.EnemyID = ?
     '''
 
-    strategy = execute_query(query, (ch, en), database='dmc5.db')
+    strategy = execute_query(query, (ch, en))
 
     # checks if a result was returned
     if not strategy:
@@ -167,6 +172,11 @@ def strategy(ch, en):
 def page_not_found(exception):
     return render_template('404.html'), 404
 
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash('File is too large. The maximum file size allowed is 2MB.')
+    return redirect(request.url)
+
 
 # login
 @app.route('/login', methods=['GET', 'POST'])
@@ -179,8 +189,7 @@ def login():
         user = execute_query(
             "SELECT * FROM accounts WHERE username = ? AND password = ?",
             (username, password),
-            fetchone=True,
-            database='account.db'
+            fetchone=True
         )
 
         if user:
@@ -212,7 +221,6 @@ def register():
         unique_username = execute_query(
             "SELECT username FROM ACCOUNTS WHERE username = ?",
             (username,),
-            database='account.db',
             fetchone=True
         )
 
@@ -231,7 +239,6 @@ def register():
         execute_query(
             "INSERT INTO accounts (username, password) VALUES (?, ?)",
             (username, password),
-            database='account.db',
             commit=True  # saves to the db
         )
 
@@ -245,12 +252,13 @@ def delete():
     get_flashed_messages()
     username = session['username']
 
-    execute_query('DELETE FROM accounts WHERE username=?', (username,), database='account.db', commit=True)
+    execute_query('DELETE FROM accounts WHERE username=?', (username,), commit=True)
     session.pop('username', None)
     flash('Account deleted')
     return redirect('/')
 
 
+# logs out and then redirects back to home page
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -265,6 +273,40 @@ def confirm():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_image():
+    if 'username' not in session:
+        flash('You need to log in to upload images.')
+        return redirect('/login')
+
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+
+            userid = session.get('userid')  # Make sure to set 'userid' during login
+            description = request.form.get('description', '')
+
+            query = '''
+            INSERT INTO UserImages (userid, ImageName, ImagePath, Description)
+            VALUES (?, ?, ?, ?)
+            '''
+            execute_query(query, query_value=(userid, filename, filepath, description), commit=True)
+
+            flash('Image successfully uploaded')
+            return redirect(url_for('upload_image'))
+
+    return render_template('upload.html')
 
 
 if __name__ == "__main__":
