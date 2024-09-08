@@ -309,5 +309,14 @@ def upload_image():
     return render_template('upload.html')
 
 
+@app.route('/img_board')
+def img_board():
+    # Query to get all images from UserImages table
+    query = "SELECT * FROM UserImages"
+    images = execute_query(query)
+
+    return render_template('img_board.html', images=images)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
