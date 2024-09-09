@@ -7,7 +7,7 @@ import sqlite3
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 megabytes
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
 
 def allowed_file(filename):
@@ -195,6 +195,7 @@ def login():
         if user:
             # successful login
             session['username'] = username
+            session['userid'] = user[0]
             return redirect('/dashboard')
         else:
             # login failed
@@ -312,7 +313,14 @@ def upload_image():
 @app.route('/img_board')
 def img_board():
     # Query to get all images from UserImages table
-    query = "SELECT * FROM UserImages"
+    query = '''SELECT UserImages.ImageID,
+    accounts.username,
+    UserImages.ImageName,
+    UserImages.ImagePath,
+    UserImages.UploadDate,
+    UserImages.Description
+    FROM UserImages
+    JOIN accounts ON UserImages.userid = accounts.userid'''
     images = execute_query(query)
 
     return render_template('img_board.html', images=images)

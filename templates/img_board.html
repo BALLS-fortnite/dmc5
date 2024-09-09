@@ -6,7 +6,7 @@
     <div class="grid-item">
         <h2>Uploaded by: {{ image[1] }}</h2>
         <img src="{{ url_for('static', filename='uploads/' ~ image[2]) }}" height="200px" alt="{{ image[3] }}">
-        <p>Upload Date: {{ image[5] }}</p>
+        <p>Description: {{ image[5] }}</p>
         <p>Upload Date: {{ image[4] }}</p>
     </div>
     {% endfor %}
