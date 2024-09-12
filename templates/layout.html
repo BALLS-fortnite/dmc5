@@ -57,21 +57,25 @@
 
                 </div>
             </div>
-            <div class="dropdown">
-                <a href="/login">Login</a>
-            </div>
-            <div class="dropdown">
-                <a href="/register">Register</a>
-            </div>
-            <div class="dropdown">
-                <a href="/dashboard">Dashboard</a>
-            </div>
-            <div class="dropdown">
-                <a href="/upload">Upload</a>
-            </div>
+            <!-- end of strategy dropdown -->
             <div class="dropdown">
                 <a href="/img_board">Image Board</a>
             </div>
+            {% if 'username' is in seession %}
+                <div class="dropdown">
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="dropdown">
+                    <a href="/upload">Upload</a>
+                </div>
+            {% else %}
+                <div class="dropdown">
+                    <a href="/login">Login</a>
+                </div>
+                <div class="dropdown">
+                    <a href="/register">Register</a>
+                </div>
+            {% endif %}
     </nav>
     <main>
 

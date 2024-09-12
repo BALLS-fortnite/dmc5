@@ -1,7 +1,7 @@
 # pip install flask
 from flask import Flask, render_template, request, session, redirect, url_for, flash, get_flashed_messages
 from werkzeug.utils import secure_filename
-from datetime import datetime
+from functools import wraps
 import os
 import sqlite3
 app = Flask(__name__)
@@ -10,15 +10,24 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
 
+app.secret_key = os.urandom(24)
+
+empty_query = None
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
-app.secret_key = os.urandom(24)
-
-empty_query = None
-
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session:
+            flash('You need to log in to access this page.')
+            return redirect(url_for('login'))  # Redirect to login if not logged in
+        return f(*args, **kwargs)
+    return decorated_function
 
 # do queries
 def execute_query(query, query_value=(), fetchone=False,  commit=False,):
@@ -272,16 +281,14 @@ def confirm():
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     return render_template('dashboard.html')
 
 
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload_image():
-    if 'username' not in session:
-        flash('You need to log in to upload images.')
-        return redirect('/login')
-
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
