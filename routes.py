@@ -29,9 +29,19 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+def already_logged_in(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in session:  # Check if the user is already logged in
+            flash('You are already logged in.')
+            return redirect(url_for('dashboard'))  # Redirect to dashboard if logged in
+        return f(*args, **kwargs)
+    return decorated_function
+
 # do queries
 def execute_query(query, query_value=(), fetchone=False,  commit=False,):
-    conn = sqlite3.connect('dmc5.db')  # connect to the specified database
+    conn = sqlite3.connect('dmc5.db')
     cur = conn.cursor()
     cur.execute(query, query_value)
 
@@ -181,6 +191,7 @@ def strategy(ch, en):
 def page_not_found(exception):
     return render_template('404.html'), 404
 
+
 @app.errorhandler(413)
 def request_entity_too_large(error):
     flash('File is too large. The maximum file size allowed is 2MB.')
@@ -189,6 +200,7 @@ def request_entity_too_large(error):
 
 # login
 @app.route('/login', methods=['GET', 'POST'])
+@already_logged_in
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -216,6 +228,7 @@ def login():
 
 # register
 @app.route('/register', methods=['GET', 'POST'])
+@already_logged_in
 def register():
     if request.method == 'POST':
         username = request.form.get("username")
