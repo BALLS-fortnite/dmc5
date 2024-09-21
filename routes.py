@@ -39,7 +39,8 @@ def already_logged_in(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# do queries
+
+# function for queries
 def execute_query(query, query_value=(), fetchone=False,  commit=False,):
     conn = sqlite3.connect('dmc5.db')
     cur = conn.cursor()
@@ -66,6 +67,7 @@ def homepage():
 # character page
 @app.route('/character/<int:id>')
 def character(id):
+    # Gets character's details according to CharacterID
     try:
         character = execute_query('SELECT * FROM Character WHERE CharacterID=?', (id,), fetchone=True)
         if character == empty_query:
@@ -76,14 +78,15 @@ def character(id):
         return render_template('404.html')
 
 
-# all characters
+# Displays all characters by CharacterID
 @app.route('/allcharacters')
 def all_characters():
+    # Displays all characters by CharacterID
     all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID')
     return render_template('allcharacters.html', all_characters=all_characters)
 
 
-# all enemies
+# Displays all enemies by EnemyID
 @app.route('/allenemies')
 def all_enemies():
     all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID')
@@ -107,7 +110,7 @@ def enemy(id):
         return render_template('404.html', message="An unexpected error occurred.")
 
 
-# enemies by type
+# Enemies by type
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     try:
@@ -116,12 +119,12 @@ def enemy_type(id):
             return render_template('404.html')
         else:
             return render_template('enemy_type.html', enemy_type=enemy_type)
-        # prevent large numbers from breaking website
+        # Prevent large numbers from breaking website
     except OverflowError:
         return render_template('404.html')
 
 
-# select character to see all strategies for said character
+# Displays characters to select one to see all their strategies
 @app.route('/strategy/character/')
 def character_strategy():
     character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
@@ -131,7 +134,7 @@ def character_strategy():
         return render_template('select_character_strategy.html', character_strategy=character_strategy,)
 
 
-# one character, all strategies
+# Get all strategies for one CharacaterID
 @app.route('/strategy/character/<int:id>')
 def character_all_strategy(id):
     try:
@@ -157,6 +160,7 @@ WHERE Character.CharacterID = ?''', (id,))
         return render_template('404.html')
 
 
+# Gets all the strategy info for a given character when fightng a given enemy
 @app.route('/strategy/<int:ch>/<int:en>')
 def strategy(ch, en):
     # executes the query with both parameters
@@ -184,18 +188,6 @@ def strategy(ch, en):
         return render_template('404.html')
 
     return render_template('strategy.html', strategy=strategy[0])
-
-
-# error page
-@app.errorhandler(404)
-def page_not_found(exception):
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(413)
-def request_entity_too_large(error):
-    flash('File is too large. The maximum file size allowed is 2MB.')
-    return redirect(request.url)
 
 
 # login
@@ -271,6 +263,7 @@ def register():
 
 
 @app.route('/delete')
+@login_required  # Account logged in is required to delete account
 def delete():
     get_flashed_messages()
     username = session['username']
@@ -283,14 +276,10 @@ def delete():
 
 # logs out and then redirects back to home page
 @app.route('/logout')
+@login_required  # Account loged in is required to logout
 def logout():
     session.pop('username', None)
     return redirect('/')
-
-
-@app.route('/confirm')
-def confirm():
-    return render_template('confirm.html')
 
 
 @app.route('/dashboard')
@@ -306,16 +295,25 @@ def upload_image():
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
+
+        # Get the file from the form
         file = request.files['file']
+
+        # Check if the user has selected a file
         if file.filename == '':
-            flash('No selected file')
+            flash('No selected file')  # Notify user that no file was selected
             return redirect(request.url)
+
+        # Check if the file is allowed (based on extensions)
         if file and allowed_file(file.filename):
+            # Secure the filename and save the file
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
+            # Retrieve the user ID from the session
             userid = session.get('userid')  # Make sure to set 'userid' during login
+            # Get the optional description from the form
             description = request.form.get('description', '')
 
             query = '''
@@ -324,12 +322,18 @@ def upload_image():
             '''
             execute_query(query, query_value=(userid, filename, filepath, description), commit=True)
 
-            flash('Image successfully uploaded')
+            flash('Image successfully uploaded')  # Notify user of successful upload
             return redirect(url_for('upload_image'))
+
+        else:
+            # File type is not allowed
+            flash('File type not allowed. Please upload a .png, .jpg, or .jpeg file.')
+            return redirect(request.url)
 
     return render_template('upload.html')
 
 
+# Logged in users get to share images and posts related to the game
 @app.route('/img_board')
 def img_board():
     # Query to get all images from UserImages table
@@ -344,6 +348,18 @@ def img_board():
     images = execute_query(query)
 
     return render_template('img_board.html', images=images)
+
+
+# error page
+@app.errorhandler(404)
+def page_not_found(exception):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash('File is too large. The maximum file size allowed is 2MB.')
+    return redirect(request.url)
 
 
 if __name__ == "__main__":
