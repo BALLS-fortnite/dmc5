@@ -2,7 +2,7 @@
 {% block content %}
 <div class="grid-container">
     {% for character in character_all_strategy %}
-    <div class="grid-item">
+    <div class="grid-multiple-items">
         <h2>Strategy for beating {{character[6]}}</h2>
         <a href="/strategy/{{character[0]}}/{{character[5]}}">
             <img src="/static/images/{{character[7]}}" height="200px" alt="{{character[1]}}">

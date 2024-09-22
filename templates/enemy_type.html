@@ -2,7 +2,7 @@
 {% block content %}
 <div class="grid-container">
     {% for enemy in enemy_type %}
-    <div class="grid-item">
+    <div class="grid-multiple-items">
         <h2>{{enemy[1]}}</h2>
         <a href="/enemy/{{enemy[0]}}">
             <img src="/static/images/{{enemy[4]}}" height="200px" alt="{{enemy[1]}}">
