@@ -1,19 +1,18 @@
 {%extends 'layout.html'%}
 {% block content %}
-<form method = "POST" action="/login">
-
-    <label for="username"><b>Username:</b></label>
-    <br>
-    <input type="text" placeholder="Enter username" name="username" id="username" minlength="6" maxlength="14" required>
-    <br>
-    <label for="password"><b>Password:</b></label>
-    <div class="password-container">
-        <input type="password" placeholder="Enter Password" name="password" id="password" minlength="8" maxlength="24" required>
-        <!-- Password visibility toggle -->
+<div class="account-container">
+    <h1>Login</h1>
+    <form method="POST" action="/login" class="account-form">
+      <label for="username"><b>Username</b></label>
+      <input type="text" name="username" id="username" minlength="6" maxlength="14" required>
+  
+      <label for="password"><b>Password</b></label>
+      <div class="password-container">
+        <input type="password" name="password" id="password" minlength="8" maxlength="24" required>
         <img src="/static/images/visibility.png" alt="Show Password" id="togglePassword" class="toggle-password">
-    </div>
-    <br>
-    <button type="submit" class="empty">Login</button>
-
-</form>
+      </div>
+  
+      <button type="submit" class="account-btn">Login</button>
+    </form>
+  </div>
 {%endblock%}

@@ -80,13 +80,12 @@
     </nav>
     <main>
 
-        <br>
         {%block content%} {%endblock%}
         <!-- Flash message location -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    <p class="flash-message">{{ message }}</p>
+                    <div class="flash-message-container"><p class="flash-message">{{ message }}</p></div>
                 {% endfor %}
             {% endif %}
         {% endwith %}

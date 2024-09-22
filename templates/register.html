@@ -1,37 +1,27 @@
 {%extends 'layout.html'%}
 {% block content %}
-<form method="POST" action="/register">
-    <div class="container">
-      <h1>Register</h1>
-      <p>Please fill in this form to create an account.</p>
-  
-      <label for="username"><b>Username:</b></label>
-      <br>
-      <input type="text" textfield="Enter username" name="username" id="username" minlength="6" maxlength="14" required>
+<div class="account-container">
+  <h1>Register</h1>
+  <form method="POST" action="/register" class="account-form">
+    <label for="username"><b>Username</b></label>
+    <input type="text" name="username" id="username" minlength="6" maxlength="14" required>
 
-      <div class="password-flex-container">
-        <div class="password-wrapper">
-          <label for="password"><b>Password:</b></label>
-          <div class="password-container">
-            <input type="password" textfield="Enter Password" name="password" id="password" minlength="8" maxlength="24" required>
-            <img src="/static/images/visibility.png" alt="Show Password" id="togglePassword" class="toggle-password">
-          </div>
-        </div>
-
-        <div class="password-wrapper">
-          <label for="passworwd_repeat"><b>Repeat Password:</b></label>
-          <div class="password-container">
-            <input type="password" textfield="Repeat Password" name="password_repeat" id="password_repeat" minlength="8" maxlength="24" required>
-            <img src="/static/images/visibility.png" alt="Show Password" id="togglePasswordRepeat" class="toggle-password">
-          </div>
-        </div>
-      </div>
-
-      <button type="submit" class="registerbtn">Register</button>
+    <label for="password"><b>Password</b></label>
+    <div class="password-container">
+      <input type="password" name="password" id="password" minlength="8" maxlength="24" required>
+      <img src="/static/images/visibility.png" alt="Show Password" id="togglePassword" class="toggle-password">
     </div>
 
-    <div class="container-signin">
-      <p>Already have an account? <a href="/login">Sign in</a>.</p>
+    <label for="password_repeat"><b>Repeat Password</b></label>
+    <div class="password-container">
+      <input type="password" name="password_repeat" id="password_repeat" minlength="8" maxlength="24" required>
+      <img src="/static/images/visibility.png" alt="Show Password" id="togglePasswordRepeat" class="toggle-password">
     </div>
+
+    <button type="submit" class="account-btn">Register</button>
   </form>
-{%endblock%}
+  <div class="container-signin">
+    <p>Already have an account? <a href="/login">Sign in</a>.</p>
+  </div>
+</div>
+  {%endblock%}
