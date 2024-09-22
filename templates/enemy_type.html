@@ -1,13 +1,14 @@
 {%extends 'layout.html'%}
 {% block content %}
-<div class="grid-container">
+<div class="grid-info-container">
     {% for enemy in enemy_type %}
     <div class="grid-multiple-items">
         <h2>{{enemy[1]}}</h2>
         <a href="/enemy/{{enemy[0]}}">
             <img src="/static/images/{{enemy[4]}}" height="200px" alt="{{enemy[1]}}">
         </a>
-        <p>Type: {{enemy[2]}}</p>
+        <p>Type: {{ enemy[2] | get_enemy_type }}
+        </p>
         <p>Description: {{enemy[3]}}</p>
     </div>
     {% endfor %}

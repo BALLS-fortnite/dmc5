@@ -58,6 +58,20 @@ def execute_query(query, query_value=(), fetchone=False,  commit=False,):
     return result
 
 
+# Function to map enemy types to their names
+def get_enemy_type(enemy_type_id):
+    enemy_types = {
+        '1': 'Normal',
+        '2': 'Elite',
+        '3': 'Boss'
+    }
+    return enemy_types.get(enemy_type_id, '')
+
+
+# Register the filter
+app.jinja_env.filters['get_enemy_type'] = get_enemy_type
+
+
 # base page
 @app.route('/')
 def homepage():
