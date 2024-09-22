@@ -164,6 +164,26 @@ nav{
   font-size: 1.5vw;
 }
 
+/* password styling */
+.password-container {
+  position: relative;
+  width: max-content;
+}
+
+.password-container input {
+  width: 100%; 
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
 /* footer section of css */
 footer{
   background-color: #141414;
