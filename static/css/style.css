@@ -236,6 +236,11 @@ nav{
   color: #91170C;
 }
 
+/* dashboard styling */
+.dashboard-button{
+  color: #141414;
+  text-decoration: none;
+}
 
 /* footer section of css */
 footer{

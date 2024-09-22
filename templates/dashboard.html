@@ -2,6 +2,6 @@
 {% block content %}
 <p>Username: {{session['username']}}</p>
 <p>This is the dashboard</p>
-<button><a href="/logout">Logout</a></button>
-<button><a href="/delete">Delete Account</a></button>
+<button><a class="dashboard-button" href="/logout">Logout</a></button>
+<button><a class="dashboard-button" href="/delete">Delete Account</a></button>
 {%endblock%}
