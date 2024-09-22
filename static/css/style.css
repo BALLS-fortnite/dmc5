@@ -170,6 +170,12 @@ nav{
   text-align: center;
 }
 
+/* textarea strategy styling */
+#strategy {
+  min-width: 40%;
+  min-height: 300px; 
+}
+
 /* flexbox for account registering and login */
 .account-container {
   display: flex;

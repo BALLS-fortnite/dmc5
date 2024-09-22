@@ -1,3 +1,4 @@
+// function for showing and hiding password
 document.addEventListener("DOMContentLoaded", function() {
     const togglePassword = document.querySelector("#togglePassword");
     const passwordInput = document.querySelector("#password");
@@ -21,3 +22,10 @@ document.addEventListener("DOMContentLoaded", function() {
         this.src = type === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
     });
 });
+
+// function to show character count for updating strategy
+function updateCharCount() {
+    const textarea = document.getElementById('strategy');
+    const charCount = document.getElementById('charCount');
+    charCount.textContent = `${textarea.value.length} / 1000 characters`;
+}

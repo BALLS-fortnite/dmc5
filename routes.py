@@ -1,13 +1,9 @@
 # pip install flask
 from flask import Flask, render_template, request, session, redirect, url_for, flash, get_flashed_messages
-from werkzeug.utils import secure_filename
 from functools import wraps
 import os
 import sqlite3
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 megabytes
-app.config['UPLOAD_FOLDER'] = 'static/uploads/'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
 
 app.secret_key = os.urandom(24)
@@ -24,7 +20,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'username' not in session:
-            flash('You need to log in to access this page.')
+            flash('You need to log in to do this.')
             return redirect(url_for('login'))  # Redirect to login if not logged in
         return f(*args, **kwargs)
     return decorated_function
@@ -175,7 +171,7 @@ WHERE Character.CharacterID = ?''', (id,))
 
 
 # Gets all the strategy info for a given character when fightng a given enemy
-@app.route('/strategy/<int:ch>/<int:en>')
+@app.route('/strategy/<int:ch>/<int:en>', methods=['GET'])
 def strategy(ch, en):
     # executes the query with both parameters
     query = '''
@@ -202,6 +198,22 @@ def strategy(ch, en):
         return render_template('404.html')
 
     return render_template('strategy.html', strategy=strategy[0])
+
+
+@app.route('/strategy/update/<int:ch>/<int:en>', methods=['POST'])
+@login_required
+def update_strategy(ch, en):
+    new_strategy = request.form.get('strategy')
+
+    # Update the strategy in the database
+    execute_query(
+        '''UPDATE Character_Enemy SET Strategy = ? WHERE CharacterID = ? AND EnemyID = ?''',
+        (new_strategy, ch, en),
+        commit=True
+    )
+
+    flash('Strategy updated successfully.')
+    return redirect(url_for('strategy', ch=ch, en=en))
 
 
 # login
@@ -300,68 +312,6 @@ def logout():
 @login_required
 def dashboard():
     return render_template('dashboard.html')
-
-
-@app.route('/upload', methods=['GET', 'POST'])
-@login_required
-def upload_image():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-
-        # Get the file from the form
-        file = request.files['file']
-
-        # Check if the user has selected a file
-        if file.filename == '':
-            flash('No selected file')  # Notify user that no file was selected
-            return redirect(request.url)
-
-        # Check if the file is allowed (based on extensions)
-        if file and allowed_file(file.filename):
-            # Secure the filename and save the file
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
-
-            # Retrieve the user ID from the session
-            userid = session.get('userid')  # Make sure to set 'userid' during login
-            # Get the optional description from the form
-            description = request.form.get('description', '')
-
-            query = '''
-            INSERT INTO UserImages (userid, ImageName, ImagePath, Description)
-            VALUES (?, ?, ?, ?)
-            '''
-            execute_query(query, query_value=(userid, filename, filepath, description), commit=True)
-
-            flash('Image successfully uploaded')  # Notify user of successful upload
-            return redirect(url_for('upload_image'))
-
-        else:
-            # File type is not allowed
-            flash('File type not allowed. Please upload a .png, .jpg, or .jpeg file.')
-            return redirect(request.url)
-
-    return render_template('upload.html')
-
-
-# Logged in users get to share images and posts related to the game
-@app.route('/img_board')
-def img_board():
-    # Query to get all images from UserImages table
-    query = '''SELECT UserImages.ImageID,
-    accounts.username,
-    UserImages.ImageName,
-    UserImages.ImagePath,
-    UserImages.UploadDate,
-    UserImages.Description
-    FROM UserImages
-    JOIN accounts ON UserImages.userid = accounts.userid'''
-    images = execute_query(query)
-
-    return render_template('img_board.html', images=images)
 
 
 # error page

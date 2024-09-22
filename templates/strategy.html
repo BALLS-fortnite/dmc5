@@ -13,4 +13,12 @@
         <p>Strategy: {{ strategy[4] }}</p>
     </div>
 </div>
+<form method="POST" action="{{ url_for('update_strategy', ch=strategy[0], en=strategy[5]) }}">
+    <label for="strategy">Strategy (max 1000 characters):</label>
+    <br>
+    <textarea name="strategy" id="strategy" maxlength="1000" oninput="updateCharCount()"></textarea>
+    <p id="charCount">0 / 1000 characters</p>
+    <button type="submit">Update Strategy</button>
+</form>
+
 {% endblock %}

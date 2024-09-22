@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='/static/css/style.css'>
-    <script src='/static/javascript/show_password.js'></script>
+    <script src='/static/javascript/script.js'></script>
     <title>DMC5</title>
 </head>
 
@@ -58,15 +58,9 @@
                 </div>
             </div>
             <!-- end of strategy dropdown -->
-            <div class="dropdown">
-                <a href="/img_board">Image Board</a>
-            </div>
             {% if 'username' is in session %}
                 <div class="dropdown">
                     <a href="/dashboard">Dashboard</a>
-                </div>
-                <div class="dropdown">
-                    <a href="/upload">Upload</a>
                 </div>
             {% else %}
                 <div class="dropdown">
