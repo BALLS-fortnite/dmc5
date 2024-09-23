@@ -112,6 +112,11 @@ nav{
   color:gray
 }
 
+.redirect-hyperlink{
+  text-decoration: underline;
+  color: #91170C;
+}
+
 /* grid container for infromation  */
 .grid-info-container {
   display: grid;
@@ -262,11 +267,6 @@ nav{
   cursor: pointer;
   width: 20px;
   height: 20px;
-}
-
-.signin-hyperlink{
-  text-decoration: underline;
-  color: #91170C;
 }
 
 /* dashboard styling */
