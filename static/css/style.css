@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 body{
   background-color: #ebebeb;
   margin:0 auto;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family:"Noto Sans", sans-serif;
 }
 ul, li{
   padding: 0;
@@ -58,6 +61,9 @@ nav{
   padding: 10px 15px;
 }
 
+.dropdown:hover{
+  background-color: #91170C;
+}
 
 .dropdown-content {
   display: none;
@@ -81,6 +87,30 @@ nav{
 .dropdownbutton:hover{
   background-color: #91170C;
 }
+/* styling for the home route's container */
+.flexbox-home-container {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center; 
+  margin-bottom: 20px; 
+}
+
+.flexbox-home-container h1 {
+  font-size: 2rem; 
+  margin-bottom: 5px;
+  color:#91170C
+}
+
+.flexbox-home-container h2 {
+  font-size: 1rem; 
+  max-width: 600px; 
+}
+.flexbox-home-container h5 {
+  font-size: .75rem; 
+  color:gray
+}
 
 /* grid container for infromation  */
 .grid-info-container {
@@ -90,9 +120,12 @@ nav{
   padding: 20px;
   row-gap: 20px;
   justify-items: center; /* Center the grid items horizontally */
-
 }
 
+.grid-info-container a{
+  text-decoration: none;
+  color: #141414;
+}
 
 /* Style for multiple grid items */
 .grid-multiple-items {

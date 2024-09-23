@@ -6,20 +6,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const togglePasswordRepeat = document.querySelector("#togglePasswordRepeat");
     const passwordRepeatInput = document.querySelector("#password_repeat")
 
+    // toggle for password input box
     togglePassword.addEventListener("click", function() {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
+        const currentPasswordType = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", currentPasswordType);
 
-        // change the image
-        this.src = type === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
+        this.src = currentPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
     });
     // toggle for repeat password input box
     togglePasswordRepeat.addEventListener("click", function() {
-        const type = passwordRepeatInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordRepeatInput.setAttribute("type", type);
+        const currentRepeatPasswordType = passwordRepeatInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordRepeatInput.setAttribute("type", currentRepeatPasswordType);
 
-        // change the image
-        this.src = type === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
+        this.src = currentRepeatPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
     });
 });
 

@@ -57,9 +57,9 @@ def execute_query(query, query_value=(), fetchone=False,  commit=False,):
 # Function to map enemy types to their names
 def get_enemy_type(enemy_type_id):
     enemy_types = {
-        '1': 'Normal',
-        '2': 'Elite',
-        '3': 'Boss'
+        1: 'Normal',
+        2: 'Elite',
+        3: 'Boss'
     }
     return enemy_types.get(enemy_type_id, '')
 
@@ -68,10 +68,14 @@ def get_enemy_type(enemy_type_id):
 app.jinja_env.filters['get_enemy_type'] = get_enemy_type
 
 
-# base page
+# Displays characters to select one to see all their strategies
 @app.route('/')
 def homepage():
-    return render_template('layout.html')
+    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
+    if character_strategy == empty_query:
+        return render_template('404.html')
+    else:
+        return render_template('select_character_strategy.html', character_strategy=character_strategy,)
 
 
 # character page
@@ -132,16 +136,6 @@ def enemy_type(id):
         # Prevent large numbers from breaking website
     except OverflowError:
         return render_template('404.html')
-
-
-# Displays characters to select one to see all their strategies
-@app.route('/strategy/character/')
-def character_strategy():
-    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
-    if character_strategy == empty_query:
-        return render_template('404.html')
-    else:
-        return render_template('select_character_strategy.html', character_strategy=character_strategy,)
 
 
 # Get all strategies for one CharacaterID

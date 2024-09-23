@@ -11,8 +11,8 @@
         <p>Enemy Type: {{ strategy[8] }}</p>
         <p>Difficulty: {{ strategy[3] }}</p>
         <p>Strategy: {{ strategy[4] }}</p>
-    </div>
-</div>
+    </div> <!-- single item div ends -->
+</div> <!-- info grid container div ends -->
 <form method="POST" action="{{ url_for('update_strategy', ch=strategy[0], en=strategy[5]) }}">
     <label for="strategy">Strategy (max 1000 characters):</label>
     <br>

@@ -14,26 +14,37 @@
 <body>
     <header>
         <div class="headerbar">
-
-            <a href="/">
-                <div class="headerimage">
+            <div class="headerimage">
+                <a href="/">
                     <img src="/static/images/dmc5_logo.png">
-                </div>
-            </a>
-        </div>
-        <!-- logo image that routes back to home page -->
+                </a>
+            </div><!-- headerimage div ends -->
+        </div> <!-- headerbar div ends -->
     </header>
+
     <nav>
         <div class="navbaritems">
+            <div class="dropdown">
+                <div class="dropdownbutton">
+                    <a href="/">Strategies</a>
+                </div>
+                <div class="dropdown-content">
+                    <a href="/strategy/character/1">Nero</a>
+                    <a href="/strategy/character/2">Dante</a>
+                    <a href="/strategy/character/3">V</a>
+                    <a href="/strategy/character/4">Vergil</a>
+                </div> <!-- dropdown-content div for strategies ends -->
+            </div> <!-- dropdown div for strategies ends -->
+            
             <div class="dropdown">
                 <div class="dropdownbutton"><a href="/allenemies">Enemies</a></div>
                 <div class="dropdown-content">
                     <a href="/enemy/type/1">Normal</a>
                     <a href="/enemy/type/2">Elite</a>
                     <a href="/enemy/type/3">Boss</a>
-                </div>
-                <!-- end of the dropdown button for enemies -->
-            </div>
+                </div> <!-- dropdown-content div ends -->
+            </div> <!-- dropdown div for enemies ends -->
+
             <div class="dropdown">
                 <div class="dropdownbutton"><a href="/allcharacters">Characters</a></div>
                 <div class="dropdown-content">
@@ -41,49 +52,39 @@
                     <a href="/character/2">Dante</a>
                     <a href="/character/3">V</a>
                     <a href="/character/4">Vergil</a>
-                </div>
-            </div>
-                <!-- end of the characters dropdown -->
-                
-            <div class="dropdown">
-                <div class="dropdownbutton">
-                    <a href="/strategy/character">Strategies</a>
-                </div>
-                <div class="dropdown-content">
-                    <a href="/strategy/character/1">Nero</a>
-                    <a href="/strategy/character/2">Dante</a>
-                    <a href="/strategy/character/3">V</a>
-                    <a href="/strategy/character/4">Vergil</a>
+                </div> <!-- dropdown-content div for characters ends -->
+            </div> <!-- dropdown div for characters ends -->
 
-                </div>
-            </div>
-            <!-- end of strategy dropdown -->
             {% if 'username' is in session %}
                 <div class="dropdown">
                     <a href="/dashboard">Dashboard</a>
-                </div>
+                </div> <!-- dashboard dropdown div ends -->
             {% else %}
                 <div class="dropdown">
                     <a href="/login">Login</a>
-                </div>
+                </div> <!-- login dropdown div ends -->
+
                 <div class="dropdown">
                     <a href="/register">Register</a>
-                </div>
-            {% endif %}    
-        </div>  
+                </div> <!-- register dropdown div ends -->
+            {% endif %}
+        </div> <!-- navbaritems div ends -->
     </nav>
-    <main>
 
-        {%block content%} {%endblock%}
+    <main>
+        {% block content %} {% endblock %}
         <!-- Flash message location -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    <div class="flash-message-container"><p class="flash-message">{{ message }}</p></div>
+                    <div class="flash-message-container">
+                        <p class="flash-message">{{ message }}</p>
+                    </div> <!-- flash-message-container div ends -->
                 {% endfor %}
             {% endif %}
         {% endwith %}
     </main>
+
     <footer>
         <h2>CONTACT ME</h2>
         <p><a href="mailto:21033@burnside.school.nz">21033@burnside.school.nz</a></p>
