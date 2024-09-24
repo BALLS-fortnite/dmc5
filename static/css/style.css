@@ -44,6 +44,8 @@ a{
 .navbaritems {
   font-size: 1rem;
   display: flex;
+  cursor: pointer;
+  user-select: none;
 }
 
 .navbaritems .navbar-button,
@@ -63,6 +65,12 @@ a{
 
 .navbaritems a:hover {
   background-color: #91170C;
+}
+.dropdown-arrow {
+  width: 20px; 
+  height: 20px; 
+  margin-left: 5px; 
+  vertical-align: middle; 
 }
 
 .dropdown-content {

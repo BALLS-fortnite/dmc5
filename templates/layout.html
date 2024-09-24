@@ -25,7 +25,10 @@
     <nav class="navbar">
         <div class="navbaritems">
             <div class="dropdown">
-                <div class="dropdownbutton" onclick="toggleDropdown(event)">Strategies</div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">
+                    Strategies 
+                    <img src="/static/images/arrow_drop_down.png" class="dropdown-arrow" alt="arrow" />
+                </div>
                 <div class="dropdown-content">
                     <a href="/strategy/character/1">Nero</a>
                     <a href="/strategy/character/2">Dante</a>
@@ -35,7 +38,10 @@
             </div> <!-- dropdown div for strategies ends -->
     
             <div class="dropdown">
-                <div class="dropdownbutton" onclick="toggleDropdown(event)">Enemies</div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">
+                    Enemies 
+                    <img src="/static/images/arrow_drop_down.png" class="dropdown-arrow" alt="arrow" />
+                </div>
                 <div class="dropdown-content">
                     <a href="/enemy/type/1">Normal</a>
                     <a href="/enemy/type/2">Elite</a>
@@ -44,7 +50,10 @@
             </div> <!-- dropdown div for enemies ends -->
     
             <div class="dropdown">
-                <div class="dropdownbutton" onclick="toggleDropdown(event)">Characters</div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">
+                    Characters 
+                    <img src="/static/images/arrow_drop_down.png" class="dropdown-arrow" alt="arrow" />
+                </div>
                 <div class="dropdown-content">
                     <a href="/character/1">Nero</a>
                     <a href="/character/2">Dante</a>
@@ -56,15 +65,15 @@
             {% if 'username' is in session %}
                 <div class="navbar-button">
                     <a href="/dashboard">Dashboard</a>
-                </div> <!-- dashboard dropdown div ends -->
+                </div> <!-- dashboard button div ends -->
             {% else %}
                 <div class="navbar-button">
                     <a href="/login">Login</a>
-                </div> <!-- login dropdown div ends -->
+                </div> <!-- login button div ends -->
     
                 <div class="navbar-button">
                     <a href="/register">Register</a>
-                </div> <!-- register dropdown div ends -->
+                </div> <!-- register button div ends -->
             {% endif %}
         </div> <!-- navbaritems div ends -->
     </nav>

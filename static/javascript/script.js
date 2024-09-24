@@ -31,34 +31,32 @@ function updateCharCount() {
 
 // taken and modified from w3schools, toggles dropdown on click
 function toggleDropdown(event) {
-    // Remove 'active' class from all other dropdown buttons
-    document.querySelectorAll('.dropdownbutton').forEach(button => {
-        button.classList.remove('active');
-    });
-    
-    // Toggle the clicked dropdown's content
     const dropdownContent = event.currentTarget.nextElementSibling;
+    const arrow = event.currentTarget.querySelector('.dropdown-arrow');
+
+    // Toggle the dropdown content
     dropdownContent.classList.toggle("show");
 
-    // Add 'active' class to the clicked button
-    event.currentTarget.classList.add('active');
+    // Change the arrow image based on dropdown state
+    if (dropdownContent.classList.contains("show")) {
+        arrow.src = "/static/images/arrow_drop_up.png"; // Change to up arrow
+    } else {
+        arrow.src = "/static/images/arrow_drop_down.png"; // Change back to down arrow
+    }
 }
 
 // Close the dropdown if the user clicks outside
 window.onclick = function(event) {
-    if (!event.target.matches('.dropdownbutton')) {
+    if (!event.target.matches('.dropdownbutton') && !event.target.matches('.dropdown-arrow')) {
         const dropdowns = document.getElementsByClassName("dropdown-content");
+        const arrows = document.querySelectorAll('.dropdown-arrow');
         for (let i = 0; i < dropdowns.length; i++) {
             const openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
+                arrows[i].src = "/static/images/arrow_drop_down.png"; // Reset arrow to down
             }
         }
-
-        // Remove 'active' class from all dropdown buttons
-        document.querySelectorAll('.dropdownbutton').forEach(button => {
-            button.classList.remove('active');
-        });
     }
 };
 
