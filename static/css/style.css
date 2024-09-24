@@ -37,6 +37,7 @@ a{
 
 
 /* navbar styling starts here */
+/* Main navbar styling */
 .navbar {
   background-color: #141414;
 }
@@ -44,7 +45,6 @@ a{
 .navbaritems {
   font-size: 1rem;
   display: flex;
-  cursor: pointer;
   user-select: none;
 }
 
@@ -66,13 +66,50 @@ a{
 .navbaritems a:hover {
   background-color: #91170C;
 }
-.dropdown-arrow {
-  width: 20px; 
-  height: 20px; 
-  margin-left: 5px; 
-  vertical-align: middle; 
+
+
+/* Mobile menu styling */
+.menu-icon {
+  display: none;
+  cursor: pointer;
 }
 
+.mobile-navbaritems {
+  display: none;
+  flex-direction: column;
+  background-color: #141414;
+}
+
+.mobile-navbaritems a {
+  display: block;
+  padding: 15px;
+  color: #ebebeb;
+  text-decoration: none;
+  font-size: inherit;
+}
+
+.mobile-navbaritems a:hover {
+  background-color: #91170C;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  /* Hide desktop navigation and show mobile menu icon */
+  .navbaritems {
+      display: none;
+  }
+
+  .menu-icon {
+      display: block;
+  }
+
+  /* Show the mobile menu when open */
+  .mobile-navbaritems.show {
+      display: flex;
+  }
+}
+
+/* Dropdown menu styling */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -94,11 +131,20 @@ a{
   color: #ebebeb;
   padding: 10px 15px;
   font-size: inherit;
+  cursor: pointer;
 }
 
 .dropdownbutton:hover {
   background-color: #91170C;
 }
+
+.dropdown-arrow {
+  width: 20px; 
+  height: 20px; 
+  margin-left: 5px; 
+  vertical-align: middle; 
+}
+
 
 /* styling for the home route's container */
 .flexbox-home-container {

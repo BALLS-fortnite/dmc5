@@ -64,3 +64,8 @@ window.onclick = function(event) {
 document.querySelectorAll('.dropdownbutton').forEach(button => {
     button.onclick = toggleDropdown;
 });
+
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('show');
+}

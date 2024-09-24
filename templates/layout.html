@@ -23,6 +23,12 @@
     </header>
 
     <nav class="navbar">
+        <!-- Menu icon for small screens -->
+        <div class="menu-icon" onclick="toggleMobileMenu()">
+            <img src="/static/images/menu.png" alt="menu icon" />
+        </div>
+    
+        <!-- Main navigation (visible on larger screens) -->
         <div class="navbaritems">
             <div class="dropdown">
                 <div class="dropdownbutton" onclick="toggleDropdown(event)">
@@ -34,8 +40,8 @@
                     <a href="/strategy/character/2">Dante</a>
                     <a href="/strategy/character/3">V</a>
                     <a href="/strategy/character/4">Vergil</a>
-                </div> <!-- dropdown-content div for strategies ends -->
-            </div> <!-- dropdown div for strategies ends -->
+                </div>
+            </div>
     
             <div class="dropdown">
                 <div class="dropdownbutton" onclick="toggleDropdown(event)">
@@ -46,8 +52,8 @@
                     <a href="/enemy/type/1">Normal</a>
                     <a href="/enemy/type/2">Elite</a>
                     <a href="/enemy/type/3">Boss</a>
-                </div> <!-- dropdown-content div ends -->
-            </div> <!-- dropdown div for enemies ends -->
+                </div>
+            </div>
     
             <div class="dropdown">
                 <div class="dropdownbutton" onclick="toggleDropdown(event)">
@@ -59,24 +65,45 @@
                     <a href="/character/2">Dante</a>
                     <a href="/character/3">V</a>
                     <a href="/character/4">Vergil</a>
-                </div> <!-- dropdown-content div for characters ends -->
-            </div> <!-- dropdown div for characters ends -->
+                </div>
+            </div>
     
             {% if 'username' is in session %}
                 <div class="navbar-button">
                     <a href="/dashboard">Dashboard</a>
-                </div> <!-- dashboard button div ends -->
+                </div>
             {% else %}
                 <div class="navbar-button">
                     <a href="/login">Login</a>
-                </div> <!-- login button div ends -->
-    
+                </div>
                 <div class="navbar-button">
                     <a href="/register">Register</a>
-                </div> <!-- register button div ends -->
+                </div>
             {% endif %}
         </div> <!-- navbaritems div ends -->
+    
+        <!-- Mobile menu (visible on smaller screens) -->
+        <div class="mobile-navbaritems" id="mobile-menu">
+            <a href="/character/1">Nero</a>
+            <a href="/character/2">Dante</a>
+            <a href="/character/3">V</a>
+            <a href="/character/4">Vergil</a>
+            <a href="/strategy/character/1">Nero Strategies</a>
+            <a href="/strategy/character/2">Dante Strategies</a>
+            <a href="/strategy/character/3">V Strategies</a>
+            <a href="/strategy/character/4">Vergil Strategies</a>
+            <a href="/enemy/type/1">Normal Enemies</a>
+            <a href="/enemy/type/2">Elite Enemies</a>
+            <a href="/enemy/type/3">Boss Enemies</a>
+            {% if 'username' is in session %}
+                <a href="/dashboard">Dashboard</a>
+            {% else %}
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            {% endif %}
+        </div>
     </nav>
+    
 
     <main>
         {% block content %} {% endblock %}
