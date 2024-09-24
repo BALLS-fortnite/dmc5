@@ -143,25 +143,29 @@ def enemy_type(id):
 def character_all_strategy(id):
     try:
         character_all_strategy = execute_query('''SELECT
-    Character.CharacterID,
-    Character.CharacterName,
-    Character.CharacterIcon,
-    Character_Enemy.Difficulty,
-    Character_Enemy.Strategy,
-    Enemy.EnemyID,
-    Enemy.EnemyName,
-    Enemy.EnemyIcon,
-    Enemy.EnemyType
-FROM Character
-JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
-JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
-WHERE Character.CharacterID = ?''', (id,))
-        if character_all_strategy == empty_query:
-            return render_template('404.html')
-        else:
-            return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
+            Character.CharacterID,
+            Character.CharacterName,
+            Character.CharacterIcon,
+            Character_Enemy.Difficulty,
+            Character_Enemy.Strategy,
+            Enemy.EnemyID,
+            Enemy.EnemyName,
+            Enemy.EnemyIcon,
+            Enemy.EnemyType
+        FROM Character
+        JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
+        JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
+        WHERE Character.CharacterID = ?''', (id,))
+        
+        # Check if the query result is empty
+        if not character_all_strategy:
+            return render_template('404.html')  # No results, return a 404 page
+
+        return render_template('character_strategies.html', character_all_strategy=character_all_strategy)
+    
     except OverflowError:
         return render_template('404.html')
+
 
 
 # Gets all the strategy info for a given character when fightng a given enemy
