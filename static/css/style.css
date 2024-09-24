@@ -103,7 +103,6 @@ a{
       display: block;
   }
 
-  /* Show the mobile menu when open */
   .mobile-navbaritems.show {
       display: flex;
   }
@@ -183,7 +182,7 @@ a{
   gap: auto;
   padding: 20px;
   row-gap: 20px;
-  justify-items: center; /* Center the grid items horizontally */
+  justify-items: center;
 }
 
 .grid-info-container a{
