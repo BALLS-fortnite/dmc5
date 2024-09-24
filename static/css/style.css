@@ -35,33 +35,33 @@ a{
   float:left;
 }
 
-.navbaritems{
-  font-size: 25px;
-  background-color: inherit;
-  display: inline-block;
-  position: relative;
-}
 
 /* navbar styling starts here */
-nav{
+.navbar {
   background-color: #141414;
+}
+
+.navbaritems {
+  font-size: 1rem;
   display: flex;
-  flex-wrap: wrap;
 }
 
-.dropdown {
-  display: inline-block;
+.navbaritems .navbar-button,
+.navbaritems .dropdown {
   position: relative;
-
+  margin-right: 15px;
+  font-size: inherit;
 }
 
-.dropdown a{
+.navbaritems a {
   display: block;
   color: #ebebeb;
   padding: 10px 15px;
+  text-decoration: none;
+  font-size: inherit;
 }
 
-.dropdown:hover{
+.navbaritems a:hover {
   background-color: #91170C;
 }
 
@@ -69,24 +69,29 @@ nav{
   display: none;
   position: absolute;
   border-radius: .25rem;
-  background-color:#141414;
+  background-color: #141414;
   box-shadow: 2px 5px 0 rgba(0, 0, 0, .01);
 }
 
-.dropdown-content a:hover{
+.dropdown-content a:hover {
   background-color: #91170C;
 }
-.dropdown:hover .dropdown-content{
+
+.dropdown-content.show {
   display: block;
 }
-.dropdownbutton{
+
+.dropdownbutton {
   background-color: #141414;
-  font-size: 25px;
   color: #ebebeb;
+  padding: 10px 15px;
+  font-size: inherit;
 }
-.dropdownbutton:hover{
+
+.dropdownbutton:hover {
   background-color: #91170C;
 }
+
 /* styling for the home route's container */
 .flexbox-home-container {
   display: flex;

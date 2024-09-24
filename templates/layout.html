@@ -22,12 +22,10 @@
         </div> <!-- headerbar div ends -->
     </header>
 
-    <nav>
+    <nav class="navbar">
         <div class="navbaritems">
             <div class="dropdown">
-                <div class="dropdownbutton">
-                    <a href="/">Strategies</a>
-                </div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">Strategies</div>
                 <div class="dropdown-content">
                     <a href="/strategy/character/1">Nero</a>
                     <a href="/strategy/character/2">Dante</a>
@@ -35,18 +33,18 @@
                     <a href="/strategy/character/4">Vergil</a>
                 </div> <!-- dropdown-content div for strategies ends -->
             </div> <!-- dropdown div for strategies ends -->
-            
+    
             <div class="dropdown">
-                <div class="dropdownbutton"><a href="/allenemies">Enemies</a></div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">Enemies</div>
                 <div class="dropdown-content">
                     <a href="/enemy/type/1">Normal</a>
                     <a href="/enemy/type/2">Elite</a>
                     <a href="/enemy/type/3">Boss</a>
                 </div> <!-- dropdown-content div ends -->
             </div> <!-- dropdown div for enemies ends -->
-
+    
             <div class="dropdown">
-                <div class="dropdownbutton"><a href="/allcharacters">Characters</a></div>
+                <div class="dropdownbutton" onclick="toggleDropdown(event)">Characters</div>
                 <div class="dropdown-content">
                     <a href="/character/1">Nero</a>
                     <a href="/character/2">Dante</a>
@@ -54,17 +52,17 @@
                     <a href="/character/4">Vergil</a>
                 </div> <!-- dropdown-content div for characters ends -->
             </div> <!-- dropdown div for characters ends -->
-
+    
             {% if 'username' is in session %}
-                <div class="dropdown">
+                <div class="navbar-button">
                     <a href="/dashboard">Dashboard</a>
                 </div> <!-- dashboard dropdown div ends -->
             {% else %}
-                <div class="dropdown">
+                <div class="navbar-button">
                     <a href="/login">Login</a>
                 </div> <!-- login dropdown div ends -->
-
-                <div class="dropdown">
+    
+                <div class="navbar-button">
                     <a href="/register">Register</a>
                 </div> <!-- register dropdown div ends -->
             {% endif %}

@@ -28,3 +28,41 @@ function updateCharCount() {
     const charCount = document.getElementById('charCount');
     charCount.textContent = `${textarea.value.length} / 1000 characters`;
 }
+
+// taken and modified from w3schools, toggles dropdown on click
+function toggleDropdown(event) {
+    // Remove 'active' class from all other dropdown buttons
+    document.querySelectorAll('.dropdownbutton').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Toggle the clicked dropdown's content
+    const dropdownContent = event.currentTarget.nextElementSibling;
+    dropdownContent.classList.toggle("show");
+
+    // Add 'active' class to the clicked button
+    event.currentTarget.classList.add('active');
+}
+
+// Close the dropdown if the user clicks outside
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdownbutton')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+
+        // Remove 'active' class from all dropdown buttons
+        document.querySelectorAll('.dropdownbutton').forEach(button => {
+            button.classList.remove('active');
+        });
+    }
+};
+
+// Attach the toggle function to the buttons
+document.querySelectorAll('.dropdownbutton').forEach(button => {
+    button.onclick = toggleDropdown;
+});
