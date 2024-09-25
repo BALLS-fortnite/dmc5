@@ -19,13 +19,13 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
-def login_required(f):
-    @wraps(f)
+def login_required(original_function):
+    @wraps(original_function)
     def decorated_function(*args, **kwargs):
         if 'username' not in session:
             flash('You need to log in to do this.')
             return redirect(url_for('login'))
-        return f(*args, **kwargs)
+        return original_function(*args, **kwargs)
     return decorated_function
 
 
@@ -71,7 +71,9 @@ app.jinja_env.filters['get_enemy_type'] = get_enemy_type
 
 @app.route('/')
 def homepage():
-    character_strategy = execute_query('SELECT * FROM Character ORDER BY CharacterID')
+    character_strategy = execute_query('''SELECT CharacterID, CharacterName,
+                                       CharacterType, CharacterDescription,
+                                       CharacterIcon FROM Character ORDER BY CharacterID''')
     if character_strategy == empty_query:
         return render_template('404.html')
     else:
@@ -82,7 +84,9 @@ def homepage():
 @app.route('/character/<int:id>')
 def character(id):
     try:
-        character = execute_query('SELECT * FROM Character WHERE CharacterID=?',
+        character = execute_query('''SELECT CharacterName, CharacterType,
+                                  CharacterDescription, CharacterIcon
+                                  FROM Character WHERE CharacterID=?''',
                                   (id,), fetchone=True)
         if character == empty_query:
             return render_template('404.html')
@@ -94,20 +98,24 @@ def character(id):
 
 @app.route('/allcharacters')
 def all_characters():
-    all_characters = execute_query('SELECT * FROM Character ORDER BY CharacterID')
+    all_characters = execute_query('''SELECT CharacterID, CharacterName, CharacterType,
+                                   CharacterDescription, CharacterIcon FROM Character''')
     return render_template('allcharacters.html', all_characters=all_characters)
 
 
 @app.route('/allenemies')
 def all_enemies():
-    all_enemies = execute_query('SELECT * FROM Enemy ORDER BY EnemyID')
+    all_enemies = execute_query('''SELECT EnemyID, EnemyName, EnemyType,
+                                EnemyDescription, EnemyIcon FROM Enemy''')
     return render_template('allenemies.html', all_enemies=all_enemies)
 
 
 @app.route('/enemy/<int:id>')
 def enemy(id):
     try:
-        enemy = execute_query('SELECT * FROM Enemy WHERE EnemyID=?', (id,), fetchone=True)
+        enemy = execute_query('''SELECT EnemyID, EnemyName, EnemyType,
+                              EnemyDescription, EnemyIcon FROM Enemy
+                              WHERE EnemyID=?''', (id,), fetchone=True)
 
         if enemy == empty_query:
             return render_template('404.html')
@@ -120,7 +128,9 @@ def enemy(id):
 @app.route('/enemy/type/<int:id>')
 def enemy_type(id):
     try:
-        enemy_type = execute_query('SELECT * FROM Enemy WHERE EnemyType=? ORDER BY EnemyID', (id,))
+        enemy_type = execute_query('''SELECT EnemyID, EnemyName, EnemyType,
+                                   EnemyDescription, EnemyIcon FROM Enemy
+                                   WHERE EnemyType=? ORDER BY EnemyID''', (id,))
         if not enemy_type:
             return render_template('404.html')
         else:
@@ -135,7 +145,6 @@ def character_all_strategy(id):
         character_all_strategy = execute_query('''SELECT
             Character.CharacterID,
             Character.CharacterName,
-            Character.CharacterIcon,
             Character_Enemy.Difficulty,
             Character_Enemy.Strategy,
             Enemy.EnemyID,
@@ -207,7 +216,7 @@ def character_limits():
         'username_max_length': 14,
         'password_min_length': 8,
         'password_max_length': 24,
-        'strategy_text_length': 2000,
+        'strategy_max_length': 2000,
         'min_difficulty': 1,
         'max_difficulty': 10
     }
@@ -259,7 +268,8 @@ def login():
         password = request.form.get('password')
 
         user = execute_query(
-            "SELECT * FROM accounts WHERE username = ? AND password = ?",
+            '''SELECT userid, username, password FROM accounts WHERE username = ?
+            AND password = ?''',
             (username, password),
             fetchone=True
         )

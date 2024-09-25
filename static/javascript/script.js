@@ -64,6 +64,6 @@ document.addEventListener("DOMContentLoaded", function() {
 function updateCharCount() {
     const textarea = document.getElementById('strategy');
     const charCount = document.getElementById('charCount');
-    const maxLength = document.getElementById('strategy-container').getAttribute('data-maxlength');
+    const maxLength = textarea.getAttribute('maxlength');
     charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
-} 
+}

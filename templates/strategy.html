@@ -20,7 +20,7 @@
         <br>
         <label for="strategy">Strategy (max {{ strategy_text_length }} characters):</label>
         <br>
-        <textarea name="strategy" id="strategy" maxlength="{{ strategy_text_length }}" oninput="updateCharCount()">{{ strategy[4] }}</textarea>
+        <textarea name="strategy" id="strategy" maxlength="{{ strategy_max_length }}" oninput="updateCharCount()">{{ strategy[4] }}</textarea>
         <p id="charCount">{{ strategy[4]|length }} / {{ strategy_text_length }} characters</p>
         <button type="submit">Update Strategy</button>
     </form>
