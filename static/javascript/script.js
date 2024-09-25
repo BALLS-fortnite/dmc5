@@ -1,36 +1,4 @@
-// function for showing and hiding password
-document.addEventListener("DOMContentLoaded", function() {
-    const togglePassword = document.querySelector("#togglePassword");
-    const passwordInput = document.querySelector("#password");
-
-    const togglePasswordRepeat = document.querySelector("#togglePasswordRepeat");
-    const passwordRepeatInput = document.querySelector("#password_repeat")
-
-    togglePassword.addEventListener("click", function() {
-        const currentPasswordType = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", currentPasswordType);
-
-        this.src = currentPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
-    });
-
-    togglePasswordRepeat.addEventListener("click", function() {
-        const currentRepeatPasswordType = passwordRepeatInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordRepeatInput.setAttribute("type", currentRepeatPasswordType);
-
-        this.src = currentRepeatPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
-    });
-});
-
-function updateCharCount() {
-    const textarea = document.getElementById('strategy');
-    const charCount = document.getElementById('charCount');
-    const container = document.getElementById('strategy-container');
-    const maxLength = container.getAttribute('data-maxlength'); 
-
-    charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
-}
-
-
+// Navbar scripts
 // taken and modified from w3schools, toggles dropdown on click
 function toggleDropdown(event) {
     const dropdownContent = event.currentTarget.nextElementSibling;
@@ -68,15 +36,34 @@ function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenu.classList.toggle('show');
 }
+
+// scripts for showing and hiding password, for register and login page
+document.addEventListener("DOMContentLoaded", function() {
+    const togglePassword = document.querySelector("#togglePassword");
+    const passwordInput = document.querySelector("#password");
+
+    const togglePasswordRepeat = document.querySelector("#togglePasswordRepeat");
+    const passwordRepeatInput = document.querySelector("#password_repeat")
+
+    togglePassword.addEventListener("click", function() {
+        const currentPasswordType = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", currentPasswordType);
+
+        this.src = currentPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
+    });
+
+    togglePasswordRepeat.addEventListener("click", function() {
+        const currentRepeatPasswordType = passwordRepeatInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordRepeatInput.setAttribute("type", currentRepeatPasswordType);
+
+        this.src = currentRepeatPasswordType  === "password" ? "/static/images/visibility.png" : "/static/images/visibility_off.png";
+    });
+});
+
+// script for strategy page
 function updateCharCount() {
     const textarea = document.getElementById('strategy');
     const charCount = document.getElementById('charCount');
     const maxLength = document.getElementById('strategy-container').getAttribute('data-maxlength');
     charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
-}
-
-function updateDifficulty() {
-    const difficulty = document.getElementById('difficulty');
-    const difficultyDisplay = document.getElementById('difficultyDisplay');
-    difficultyDisplay.textContent = `${difficulty.value} / {{ difficulty_max }}`;
 }
