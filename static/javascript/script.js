@@ -1,5 +1,5 @@
 // Navbar scripts
-// taken and modified from w3schools, toggles dropdown on click
+// taken and modified from w3schools; toggles dropdown on click
 function toggleDropdown(event) {
     const dropdownContent = event.currentTarget.nextElementSibling;
     const arrow = event.currentTarget.querySelector('.dropdown-arrow');
@@ -18,11 +18,11 @@ window.onclick = function(event) {
     if (!event.target.matches('.dropdownbutton') && !event.target.matches('.dropdown-arrow')) {
         const dropdowns = document.getElementsByClassName("dropdown-content");
         const arrows = document.querySelectorAll('.dropdown-arrow');
-        for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i];
+        for (let dropdownIndex = 0; dropdownIndex < dropdowns.length; dropdownIndex++) {
+            const openDropdown = dropdowns[dropdownIndex]; // More descriptive variable name
             if (openDropdown.classList.contains('show')) {
                 openDropdown.classList.remove('show');
-                arrows[i].src = "/static/images/arrow_drop_down.png"; // Reset arrow to down
+                arrows[dropdownIndex].src = "/static/images/arrow_drop_down.png"; 
             }
         }
     }
@@ -66,4 +66,4 @@ function updateCharCount() {
     const charCount = document.getElementById('charCount');
     const maxLength = document.getElementById('strategy-container').getAttribute('data-maxlength');
     charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
-}
+} 

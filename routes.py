@@ -191,14 +191,14 @@ def update_strategy(ch, en):
     new_difficulty = request.form.get('difficulty')
 
     execute_query(
-        '''UPDATE Character_Enemy SET Strategy = ?, Difficulty = ? WHERE CharacterID = ? AND EnemyID = ?''',
+        '''UPDATE Character_Enemy SET Strategy = ?, Difficulty = ? WHERE
+        CharacterID = ? AND EnemyID = ?''',
         (new_strategy, new_difficulty, ch, en),
         commit=True
     )
 
     flash('Strategy and Difficulty updated successfully.')
     return redirect(url_for('strategy', ch=ch, en=en))
-
 
 
 def character_limits():
