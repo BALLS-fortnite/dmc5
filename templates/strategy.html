@@ -2,7 +2,6 @@
 {% block content %}
 <h1>Strategy for {{ strategy[1] }} against {{ strategy[6] }}</h1>
 <div class="grid-info-container">
-    
     <div class="grid-single-item">
         <h2>{{ strategy[1] }} vs {{ strategy[6] }}</h2>
         <a href="#">
@@ -15,13 +14,16 @@
 </div> <!-- info grid container div ends -->
 <div id="strategy-container" data-maxlength="{{ strategy_text_length }}">
     <form method="POST" action="{{ url_for('update_strategy', ch=strategy[0], en=strategy[5]) }}">
+        <label for="difficulty">Difficulty ({{ min_difficulty }}-{{ max_difficulty }}):</label>
+        <br>
+        <input type="number" name="difficulty" id="difficulty" min="{{ min_difficulty }}" max="{{ max_difficulty }}" value="{{ strategy[3] }}" required>
+        <br>
         <label for="strategy">Strategy (max {{ strategy_text_length }} characters):</label>
         <br>
-        <textarea name="strategy" id="strategy" maxlength="{{ strategy_text_length }}" oninput="updateCharCount()"></textarea>
-        <p id="charCount">0 / {{ strategy_text_length }} characters</p>
+        <textarea name="strategy" id="strategy" maxlength="{{ strategy_text_length }}" oninput="updateCharCount()">{{ strategy[4] }}</textarea>
+        <p id="charCount">{{ strategy[4]|length }} / {{ strategy_text_length }} characters</p>
         <button type="submit">Update Strategy</button>
     </form>
 </div>
 <!-- strategy container ends -->
-
 {% endblock %}

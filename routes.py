@@ -188,16 +188,17 @@ def strategy(ch, en):
 @login_required
 def update_strategy(ch, en):
     new_strategy = request.form.get('strategy')
+    new_difficulty = request.form.get('difficulty')
 
     execute_query(
-        '''UPDATE Character_Enemy SET Strategy = ? WHERE CharacterID = ? AND EnemyID = ?''',
-        (new_strategy, ch, en),
+        '''UPDATE Character_Enemy SET Strategy = ?, Difficulty = ? WHERE CharacterID = ? AND EnemyID = ?''',
+        (new_strategy, new_difficulty, ch, en),
         commit=True
     )
 
-    flash('Strategy updated successfully.')
-
+    flash('Strategy and Difficulty updated successfully.')
     return redirect(url_for('strategy', ch=ch, en=en))
+
 
 
 def character_limits():
@@ -206,7 +207,9 @@ def character_limits():
         'username_max_length': 14,
         'password_min_length': 8,
         'password_max_length': 24,
-        'strategy_text_length': 2000
+        'strategy_text_length': 2000,
+        'min_difficulty': 1,
+        'max_difficulty': 10
     }
 
 

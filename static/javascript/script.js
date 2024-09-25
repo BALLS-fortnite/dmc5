@@ -68,3 +68,15 @@ function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenu.classList.toggle('show');
 }
+function updateCharCount() {
+    const textarea = document.getElementById('strategy');
+    const charCount = document.getElementById('charCount');
+    const maxLength = document.getElementById('strategy-container').getAttribute('data-maxlength');
+    charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
+}
+
+function updateDifficulty() {
+    const difficulty = document.getElementById('difficulty');
+    const difficultyDisplay = document.getElementById('difficultyDisplay');
+    difficultyDisplay.textContent = `${difficulty.value} / {{ difficulty_max }}`;
+}
