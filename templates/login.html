@@ -4,15 +4,17 @@
     <h1>Login</h1>
     <form method="POST" action="/login" class="account-form">
       <label for="username"><b>Username</b></label>
-      <input type="text" name="username" id="username" minlength="6" maxlength="14" required>
+      <input type="text" name="username" id="username" minlength="{{ username_min_length }}" maxlength="{{ username_max_length }}"required>
   
       <label for="password"><b>Password</b></label>
       <div class="password-container">
-        <input type="password" name="password" id="password" minlength="8" maxlength="24" required>
+        <input type="password" name="password" id="password" minlength="{{ password_min_length }}" maxlength="{{ password_max_length }}" required>
         <img src="/static/images/visibility.png" alt="Show Password" id="togglePassword" class="toggle-password">
       </div>
+      <!-- password-container div ends -->
   
       <button type="submit" class="account-btn">Login</button>
     </form>
   </div>
+  <!-- account-container div ends -->
 {%endblock%}

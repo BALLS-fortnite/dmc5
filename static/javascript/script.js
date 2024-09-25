@@ -22,26 +22,27 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// function to show character count for updating strategy
 function updateCharCount() {
     const textarea = document.getElementById('strategy');
     const charCount = document.getElementById('charCount');
-    charCount.textContent = `${textarea.value.length} / 1000 characters`;
+    const container = document.getElementById('strategy-container');
+    const maxLength = container.getAttribute('data-maxlength'); 
+
+    charCount.textContent = `${textarea.value.length} / ${maxLength} characters`;
 }
+
 
 // taken and modified from w3schools, toggles dropdown on click
 function toggleDropdown(event) {
     const dropdownContent = event.currentTarget.nextElementSibling;
     const arrow = event.currentTarget.querySelector('.dropdown-arrow');
 
-    // Toggle the dropdown content
     dropdownContent.classList.toggle("show");
 
-    // Change the arrow image based on dropdown state
     if (dropdownContent.classList.contains("show")) {
-        arrow.src = "/static/images/arrow_drop_up.png"; // Change to up arrow
+        arrow.src = "/static/images/arrow_drop_up.png";
     } else {
-        arrow.src = "/static/images/arrow_drop_down.png"; // Change back to down arrow
+        arrow.src = "/static/images/arrow_drop_down.png";
     }
 }
 
@@ -60,7 +61,6 @@ window.onclick = function(event) {
     }
 };
 
-// Attach the toggle function to the buttons
 document.querySelectorAll('.dropdownbutton').forEach(button => {
     button.onclick = toggleDropdown;
 });
