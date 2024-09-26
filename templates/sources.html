@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Sources</h1>
+<h1>Copyrighted Material</h1>
+<div class="grid-info-container">
+
+    {% for icon in enemy_icons %}
+        {% if icon[0] not in character_icon_set %}
+            <div class="grid-multiple-items">
+                <img src="/static/images/{{ icon[0] }}" alt="Enemy Icon"/>
+                <p>Source: Devil May Cry 5 Official Artworks (Art Book)
+                    Author: Dengeki Game Editorial
+                </p>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% for icon in character_icons %}
+        <div class="grid-multiple-items">
+            <img src="/static/images/{{ icon[0] }}" alt="Character Icon"/>
+            <p>Source: Devil May Cry 5 Official Artworks (Art Book)
+                Author: Dengeki Game Editorial
+            </p>
+        </div>
+    {% endfor %}
+    
+</div>
+{% endblock %}

@@ -125,13 +125,8 @@
 
     <footer>
         <h2>CONTACT ME</h2>
-        <p><a href="mailto:21033@burnside.school.nz" onclick="checkMailto()">21033@burnside.school.nz</a></p>
-        <p id="fallback" style="display: none;">It seems like your email client isn't set up. Please contact us through our form.</p>
-        <form id="contactForm" action="/contact" method="POST" style="display: none;">
-            <label for="message">Your Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button type="submit">Send Message</button>
-</form>
+        <p><a href="mailto:21033@burnside.school.nz">21033@burnside.school.nz</a></p>
+        <p><a href="{{ url_for('sources') }}">Sources</a></p>
     </footer>
 </body>
 

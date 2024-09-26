@@ -282,7 +282,7 @@ def login():
             flash('Invalid username or password')
             return redirect('/login')
 
-    return render_template('login.html')
+    return render_template('login.html', **character_limits())
 
 
 @app.route('/delete')
@@ -302,6 +302,22 @@ def delete():
 def logout():
     session.pop('username', None)
     return redirect('/')
+
+
+@app.route('/sources')
+def sources():
+    enemy_query = "SELECT EnemyIcon FROM Enemy"
+    character_query = "SELECT CharacterIcon FROM Character"
+
+    enemy_icons = execute_query(enemy_query)
+    character_icons = execute_query(character_query)
+
+    # check if image is repeated from other table
+    character_icon_set = {icon[0] for icon in character_icons}
+
+    return render_template('sources.html', enemy_icons=enemy_icons,
+                           character_icons=character_icons,
+                           character_icon_set=character_icon_set)
 
 
 @app.route('/dashboard')

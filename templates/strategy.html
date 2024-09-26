@@ -18,7 +18,7 @@
         <br>
         <input type="number" name="difficulty" id="difficulty" min="{{ min_difficulty }}" max="{{ max_difficulty }}" value="{{ strategy[3] }}" required>
         <br>
-        <label for="strategy">Strategy (max {{ strategy_text_length }} characters):</label>
+        <label for="strategy">Strategy (max {{ strategy_max_length }} characters):</label>
         <br>
         <textarea name="strategy" id="strategy" maxlength="{{ strategy_max_length }}" oninput="updateCharCount()">{{ strategy[4] }}</textarea>
         <p id="charCount">{{ strategy[4]|length }} / {{ strategy_text_length }} characters</p>
