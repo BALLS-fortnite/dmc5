@@ -4,15 +4,13 @@
 <div class="grid-info-container">
     <div class="grid-single-item">
         <h2>{{ strategy[1] }} vs {{ strategy[6] }}</h2>
-        <a href="#">
-            <img src="/static/images/{{ strategy[7] }}" height="200px" alt="{{ strategy[1] }}">
-        </a>
+        <img src="/static/images/{{ strategy[7] }}" height="200px" alt="{{ strategy[1] }}">
         <p>Enemy Type: {{ strategy[8] }}</p>
         <p>Difficulty: {{ strategy[3] }}</p>
         <p>Strategy: {{ strategy[4] }}</p>
     </div> <!-- single item div ends -->
 </div> <!-- info grid container div ends -->
-<div id="strategy-container" data-maxlength="{{ strategy_text_length }}">
+<div id="strategy-container" data-maxlength="{{ strategy_max_length }}">
     <form method="POST" action="{{ url_for('update_strategy', ch=strategy[0], en=strategy[5]) }}">
         <label for="difficulty">Difficulty ({{ min_difficulty }}-{{ max_difficulty }}):</label>
         <br>
@@ -21,7 +19,7 @@
         <label for="strategy">Strategy (max {{ strategy_max_length }} characters):</label>
         <br>
         <textarea name="strategy" id="strategy" maxlength="{{ strategy_max_length }}" oninput="updateCharCount()">{{ strategy[4] }}</textarea>
-        <p id="charCount">{{ strategy[4]|length }} / {{ strategy_text_length }} characters</p>
+        <p id="charCount">{{ strategy[4]|length }} / {{ strategy_max_length }} characters</p>
         <button type="submit">Update Strategy</button>
     </form>
 </div>

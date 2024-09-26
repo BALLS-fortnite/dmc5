@@ -14,11 +14,6 @@ app.secret_key = os.urandom(24)
 empty_query = None
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-
-
 def login_required(original_function):
     @wraps(original_function)
     def decorated_function(*args, **kwargs):
@@ -168,29 +163,34 @@ def character_all_strategy(id):
 
 @app.route('/strategy/<int:ch>/<int:en>', methods=['GET'])
 def strategy(ch, en):
-    query = '''
-    SELECT
-        Character.CharacterID,
-        Character.CharacterName,
-        Character.CharacterIcon,
-        Character_Enemy.Difficulty,
-        Character_Enemy.Strategy,
-        Enemy.EnemyID,
-        Enemy.EnemyName,
-        Enemy.EnemyIcon,
-        Enemy.EnemyType
-    FROM Character
-    JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
-    JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
-    WHERE Character.CharacterID = ? AND Enemy.EnemyID = ?
-    '''
+    try:
+        query = '''
+        SELECT
+            Character.CharacterID,
+            Character.CharacterName,
+            Character.CharacterIcon,
+            Character_Enemy.Difficulty,
+            Character_Enemy.Strategy,
+            Enemy.EnemyID,
+            Enemy.EnemyName,
+            Enemy.EnemyIcon,
+            Enemy.EnemyType
+        FROM Character
+        JOIN Character_Enemy ON Character.CharacterID = Character_Enemy.CharacterID
+        JOIN Enemy ON Enemy.EnemyID = Character_Enemy.EnemyID
+        WHERE Character.CharacterID = ? AND Enemy.EnemyID = ?
+        '''
 
-    strategy = execute_query(query, (ch, en))
+        strategy = execute_query(query, (ch, en))
 
-    if not strategy:
+        if not strategy:
+            return render_template('404.html')
+
+        return render_template('strategy.html', strategy=strategy[0], **character_limits())
+
+    except OverflowError:
         return render_template('404.html')
 
-    return render_template('strategy.html', strategy=strategy[0], **character_limits())
 
 
 @app.route('/strategy/update/<int:ch>/<int:en>', methods=['POST'])
