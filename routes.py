@@ -234,7 +234,7 @@ def register():
             return redirect('/register')
 
         username_exists = execute_query(
-            "SELECT username FROM ACCOUNTS WHERE username = ?",
+            "SELECT username FROM Accounts WHERE username = ?",
             (username,),
             fetchone=True
         )
@@ -249,7 +249,7 @@ def register():
             return redirect('/register')
 
         execute_query(
-            "INSERT INTO accounts (username, password) VALUES (?, ?)",
+            "INSERT INTO Accounts (username, password) VALUES (?, ?)",
             (username, password),
             commit=True
         )
@@ -267,7 +267,7 @@ def login():
         password = request.form.get('password')
 
         user = execute_query(
-            '''SELECT userid, username, password FROM accounts WHERE username = ?
+            '''SELECT userid, username, password FROM Accounts WHERE username = ?
             AND password = ?''',
             (username, password),
             fetchone=True
@@ -290,7 +290,7 @@ def delete():
     get_flashed_messages()
     username = session['username']
 
-    execute_query('DELETE FROM accounts WHERE username=?', (username,), commit=True)
+    execute_query('DELETE FROM Accounts WHERE username=?', (username,), commit=True)
     session.pop('username', None)
     flash('Account deleted')
     return redirect('/')
