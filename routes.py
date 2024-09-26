@@ -192,7 +192,6 @@ def strategy(ch, en):
         return render_template('404.html')
 
 
-
 @app.route('/strategy/update/<int:ch>/<int:en>', methods=['POST'])
 @login_required
 def update_strategy(ch, en):
@@ -244,7 +243,7 @@ def register():
             flash('Username taken')
             return redirect('/register')
 
-        check_type = username.isalnum()
+        check_type = username.isalnum() and username.isascii()
         if check_type is False:
             flash('Only letters and numbers are allowed')
             return redirect('/register')
