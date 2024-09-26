@@ -24,13 +24,13 @@ def login_required(original_function):
     return decorated_function
 
 
-def already_logged_in(f):
-    @wraps(f)
+def already_logged_in(original_function):
+    @wraps(original_function)
     def decorated_function(*args, **kwargs):
         if 'username' in session:
             flash('You are already logged in.')
             return redirect(url_for('dashboard'))
-        return f(*args, **kwargs)
+        return original_function(*args, **kwargs)
     return decorated_function
 
 
